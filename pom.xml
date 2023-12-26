@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>bukkit-gui-core</module>
+        <module>bukkit-gui-example</module>
     </modules>
 
     <properties>
