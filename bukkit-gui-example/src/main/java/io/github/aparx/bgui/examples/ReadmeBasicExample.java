@@ -1,8 +1,8 @@
 package io.github.aparx.bgui.examples;
 
-import io.github.aparx.bgui.core.InventoryPosition;
-import io.github.aparx.bgui.core.custom.CustomInventoryBuilder;
-import io.github.aparx.bgui.core.custom.populators.InventoryStoragePopulator;
+import io.github.aparx.bgui.core.dimension.InventoryPosition;
+import io.github.aparx.bgui.core.CustomInventoryBuilder;
+import io.github.aparx.bgui.core.populators.InventoryStoragePopulator;
 import io.github.aparx.bommons.ticks.TickDuration;
 import io.github.aparx.bommons.ticks.TickTimeUnit;
 import org.bukkit.ChatColor;
@@ -19,7 +19,7 @@ import org.checkerframework.framework.qual.DefaultQualifier;
  * @since 1.0
  */
 @DefaultQualifier(NonNull.class)
-public final class ReadmeExample extends BukkitGuiExamplePlugin {
+public final class ReadmeBasicExample extends BukkitGuiExamplePlugin {
 
   @Override
   public void showInventory(Player player) {

@@ -1,6 +1,6 @@
-package io.github.aparx.bgui.core.custom.populators;
+package io.github.aparx.bgui.core.populators;
 
-import io.github.aparx.bgui.core.custom.InventoryContentView;
+import io.github.aparx.bgui.core.InventoryContentView;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**

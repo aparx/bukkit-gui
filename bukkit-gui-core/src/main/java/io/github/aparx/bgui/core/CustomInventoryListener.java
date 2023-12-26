@@ -1,8 +1,8 @@
-package io.github.aparx.bgui.core.custom;
+package io.github.aparx.bgui.core;
 
 import com.google.common.base.Preconditions;
-import io.github.aparx.bgui.core.InventoryPosition;
 import io.github.aparx.bgui.core.item.InventoryItem;
+import io.github.aparx.bgui.core.dimension.InventoryPosition;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

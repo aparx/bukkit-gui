@@ -1,11 +1,11 @@
-package io.github.aparx.bgui.core.custom;
+package io.github.aparx.bgui.core;
 
 import com.google.common.base.Preconditions;
-import io.github.aparx.bgui.core.InventoryDimensions;
-import io.github.aparx.bgui.core.InventoryPosition;
-import io.github.aparx.bgui.core.InventorySection;
 import io.github.aparx.bgui.core.item.InventoryItem;
 import io.github.aparx.bgui.core.item.InventoryItemAccessor;
+import io.github.aparx.bgui.core.dimension.InventoryDimensions;
+import io.github.aparx.bgui.core.dimension.InventoryPosition;
+import io.github.aparx.bgui.core.dimension.InventorySection;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Deterministic;

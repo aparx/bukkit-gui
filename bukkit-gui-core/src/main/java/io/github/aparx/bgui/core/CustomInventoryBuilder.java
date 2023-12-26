@@ -1,13 +1,13 @@
-package io.github.aparx.bgui.core.custom;
+package io.github.aparx.bgui.core;
 
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CheckReturnValue;
-import io.github.aparx.bgui.core.custom.content.InventoryStorageLayer;
-import io.github.aparx.bgui.core.custom.populators.InventoryDynamicPagePopulator;
-import io.github.aparx.bgui.core.custom.populators.InventoryPagePopulator;
-import io.github.aparx.bgui.core.custom.populators.InventoryStoragePopulator;
-import io.github.aparx.bgui.core.InventoryDimensions;
+import io.github.aparx.bgui.core.content.InventoryStorageLayer;
+import io.github.aparx.bgui.core.populators.InventoryDynamicPagePopulator;
+import io.github.aparx.bgui.core.populators.InventoryPagePopulator;
+import io.github.aparx.bgui.core.populators.InventoryStoragePopulator;
+import io.github.aparx.bgui.core.dimension.InventoryDimensions;
 import io.github.aparx.bommons.ticks.TickDuration;
 import org.bukkit.plugin.Plugin;
 import org.checkerframework.checker.nullness.qual.NonNull;

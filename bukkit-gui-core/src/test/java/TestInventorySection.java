@@ -1,5 +1,5 @@
-import io.github.aparx.bgui.core.InventoryPosition;
-import io.github.aparx.bgui.core.InventorySection;
+import io.github.aparx.bgui.core.dimension.InventoryPosition;
+import io.github.aparx.bgui.core.dimension.InventorySection;
 import org.junit.Assert;
 import org.junit.Test;
 

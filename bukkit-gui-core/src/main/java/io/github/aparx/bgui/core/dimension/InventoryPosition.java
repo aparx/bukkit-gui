@@ -1,4 +1,4 @@
-package io.github.aparx.bgui.core;
+package io.github.aparx.bgui.core.dimension;
 
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CheckReturnValue;

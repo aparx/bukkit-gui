@@ -1,8 +1,8 @@
-package io.github.aparx.bgui.core.custom.populators.interpolator;
+package io.github.aparx.bgui.core.populators.interpolator;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.AbstractIterator;
-import io.github.aparx.bgui.core.InventoryPosition;
+import io.github.aparx.bgui.core.dimension.InventoryPosition;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.framework.qual.DefaultQualifier;
 

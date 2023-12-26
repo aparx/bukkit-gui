@@ -1,6 +1,6 @@
-package io.github.aparx.bgui.core.custom;
+package io.github.aparx.bgui.core;
 
-import io.github.aparx.bgui.core.InventorySection;
+import io.github.aparx.bgui.core.dimension.InventorySection;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.DefaultQualifier;

@@ -1,10 +1,10 @@
-package io.github.aparx.bgui.core.custom.content.pagination;
+package io.github.aparx.bgui.core.content.pagination;
 
-import io.github.aparx.bgui.core.InventoryPosition;
-import io.github.aparx.bgui.core.InventorySection;
-import io.github.aparx.bgui.core.custom.InventoryContentView;
-import io.github.aparx.bgui.core.custom.CopyableInventoryContentView;
-import io.github.aparx.bgui.core.custom.content.InventoryStorageLayer;
+import io.github.aparx.bgui.core.dimension.InventoryPosition;
+import io.github.aparx.bgui.core.dimension.InventorySection;
+import io.github.aparx.bgui.core.InventoryContentView;
+import io.github.aparx.bgui.core.CopyableInventoryContentView;
+import io.github.aparx.bgui.core.content.InventoryStorageLayer;
 import io.github.aparx.bgui.core.item.InventoryItem;
 import io.github.aparx.bgui.core.item.InventoryItemAccessor;
 import org.apache.commons.lang3.ArrayUtils;

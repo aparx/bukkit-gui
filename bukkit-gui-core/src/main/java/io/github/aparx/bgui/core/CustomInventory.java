@@ -1,9 +1,9 @@
-package io.github.aparx.bgui.core.custom;
+package io.github.aparx.bgui.core;
 
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import io.github.aparx.bgui.core.dimension.InventoryDimensions;
 import io.github.aparx.bommons.core.WeakHashSet;
-import io.github.aparx.bgui.core.InventoryDimensions;
 import io.github.aparx.bgui.core.item.InventoryItem;
 import io.github.aparx.bgui.core.item.InventoryItemAccessor;
 import io.github.aparx.bommons.ticks.TickDuration;

@@ -1,11 +1,11 @@
-package io.github.aparx.bgui.core.custom.content.pagination;
+package io.github.aparx.bgui.core.content.pagination;
 
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import io.github.aparx.bgui.core.InventoryPosition;
-import io.github.aparx.bgui.core.InventorySection;
-import io.github.aparx.bgui.core.custom.CopyableInventoryContentView;
-import io.github.aparx.bgui.core.custom.InventoryContentView;
+import io.github.aparx.bgui.core.dimension.InventoryPosition;
+import io.github.aparx.bgui.core.dimension.InventorySection;
+import io.github.aparx.bgui.core.CopyableInventoryContentView;
+import io.github.aparx.bgui.core.InventoryContentView;
 import io.github.aparx.bgui.core.item.InventoryItem;
 import io.github.aparx.bgui.core.item.InventoryItemAccessor;
 import org.checkerframework.checker.index.qual.NonNegative;

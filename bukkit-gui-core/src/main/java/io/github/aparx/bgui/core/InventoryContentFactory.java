@@ -1,11 +1,11 @@
-package io.github.aparx.bgui.core.custom;
+package io.github.aparx.bgui.core;
 
-import io.github.aparx.bgui.core.custom.content.InventoryLayerGroup;
-import io.github.aparx.bgui.core.custom.content.InventoryStorageLayer;
-import io.github.aparx.bgui.core.custom.content.pagination.InventoryDynamicPageGroup;
-import io.github.aparx.bgui.core.custom.content.pagination.InventoryPageGroup;
-import io.github.aparx.bgui.core.InventoryDimensions;
-import io.github.aparx.bgui.core.InventorySection;
+import io.github.aparx.bgui.core.content.InventoryLayerGroup;
+import io.github.aparx.bgui.core.content.InventoryStorageLayer;
+import io.github.aparx.bgui.core.content.pagination.InventoryDynamicPageGroup;
+import io.github.aparx.bgui.core.content.pagination.InventoryPageGroup;
+import io.github.aparx.bgui.core.dimension.InventoryDimensions;
+import io.github.aparx.bgui.core.dimension.InventorySection;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**

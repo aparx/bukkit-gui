@@ -1,4 +1,4 @@
-package io.github.aparx.bgui.core.custom.content.pagination;
+package io.github.aparx.bgui.core.content.pagination;
 
 /**
  * @author aparx (Vinzent Z.)

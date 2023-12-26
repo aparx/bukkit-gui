@@ -1,14 +1,14 @@
-package io.github.aparx.bgui.core.custom.populators;
+package io.github.aparx.bgui.core.populators;
 
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import io.github.aparx.bgui.core.custom.populators.interpolator.LineInterpolator;
-import io.github.aparx.bgui.core.InventoryDimensions;
-import io.github.aparx.bgui.core.InventoryPosition;
-import io.github.aparx.bgui.core.InventorySection;
-import io.github.aparx.bgui.core.custom.InventoryContentFactory;
-import io.github.aparx.bgui.core.custom.InventoryContentView;
-import io.github.aparx.bgui.core.custom.content.InventoryStorageLayer;
+import io.github.aparx.bgui.core.populators.interpolator.LineInterpolator;
+import io.github.aparx.bgui.core.dimension.InventoryDimensions;
+import io.github.aparx.bgui.core.dimension.InventoryPosition;
+import io.github.aparx.bgui.core.dimension.InventorySection;
+import io.github.aparx.bgui.core.InventoryContentFactory;
+import io.github.aparx.bgui.core.InventoryContentView;
+import io.github.aparx.bgui.core.content.InventoryStorageLayer;
 import io.github.aparx.bgui.core.item.InventoryItem;
 import io.github.aparx.bgui.core.item.InventoryItemClickAction;
 import io.github.aparx.bgui.core.item.InventoryItemFactory;
