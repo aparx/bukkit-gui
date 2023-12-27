@@ -101,3 +101,5 @@ Dynamic pagination is, as can already be seen, dynamic, as in pages are created 
         .build(plugin)
         .show(player);
 ```
+
+<img src="https://i.gyazo.com/c240e947b8830a4811c8c0b4c020d8bb.gif" width="250" alt="Result of dynamic pagination"/>
