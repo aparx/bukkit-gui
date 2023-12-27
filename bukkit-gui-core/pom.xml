@@ -6,18 +6,16 @@
     <parent>
         <groupId>io.github.aparx</groupId>
         <artifactId>bukkit-gui</artifactId>
-        <version>1.0.0-beta.2</version>
+        <version>1.0.0-beta.1</version>
     </parent>
 
     <artifactId>bukkit-gui-core</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.1</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-
 
 </project>
