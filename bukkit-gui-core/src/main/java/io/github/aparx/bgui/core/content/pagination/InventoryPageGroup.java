@@ -49,16 +49,22 @@ public class InventoryPageGroup extends CopyableInventoryContentView implements 
   }
 
   /**
-   * Returns true if pagination is present.
+   * Returns true if pagination should be present for given amount of pages.
    * <p>This implicitly means that if the returning value is true, pagination items should be
-   * displayed for the user to walk through pages.
+   * displayed for the user to walk through pages. This is not necessarily guaranteed.
    *
+   * @param pageCount the amount of pages for which pagination might occur
    * @return true if pagination is apparent
    * @implSpec The default implementation returns true if the page count is greater than one, as
    * in there is multiple pages that can be paginated through.
    */
+  public boolean hasPagination(int pageCount) {
+    return pageCount > 1;
+  }
+
+  /** @see #hasPagination(int) */
   public boolean hasPagination() {
-    return getPageCount() > 1;
+    return hasPagination(getPageCount());
   }
 
   @Override

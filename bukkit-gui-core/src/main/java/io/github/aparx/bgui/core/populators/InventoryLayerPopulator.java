@@ -5,7 +5,6 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import io.github.aparx.bgui.core.InventoryContentFactory;
 import io.github.aparx.bgui.core.InventoryContentView;
 import io.github.aparx.bgui.core.content.InventoryLayerGroup;
-import io.github.aparx.bgui.core.content.pagination.InventoryPageGroup;
 import io.github.aparx.bgui.core.dimension.InventoryDimensions;
 import io.github.aparx.bgui.core.dimension.InventorySection;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -86,6 +85,7 @@ public class InventoryLayerPopulator implements InventoryPopulator<InventoryLaye
   @CanIgnoreReturnValue
   public InventoryLayerPopulator addLayers(
       Function<InventoryLayerGroup, Collection<? extends InventoryContentView>> layerFactory) {
+    // TODO add addLayers(Iterable) & addLayers(Collection) to InventoryLayerView and this populator
     return addLayers(layerFactory.apply(this.view).toArray(new InventoryContentView[0]));
   }
 

@@ -29,7 +29,7 @@ public final class ReadmeDynamicPaginationExample extends BukkitGuiExamplePlugin
 
     // allocate ordinary amount of items, everything after the size of the inventory will
     // be put into separate inventories and pagination items will be shown
-    InventoryItem[] items = new InventoryItem[2 /* pages */ * dimensions.size()];
+    InventoryItem[] items = new InventoryItem[2 /* pages */ * (dimensions.size() - 2)];
     for (int i = 0; i < items.length; ++i)
       items[i] = InventoryItemFactory.cancel(Material.REDSTONE, 1 + i);
 

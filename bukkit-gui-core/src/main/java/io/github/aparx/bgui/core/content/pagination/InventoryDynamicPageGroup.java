@@ -78,10 +78,14 @@ public class InventoryDynamicPageGroup extends CopyableInventoryContentView {
   /**
    * Returns the default maximum size of elements per page.
    *
-   * @return the default maximum element size per page
+   * @return the default maximum element size per page.
    */
   public int getMaximumSizePerPage() {
-    return group.getArea().size() - getExcludingElementIndices().length;
+    int areaSize = group.getArea().size();
+    int pageCount = getExpectedNumberOfPages(areaSize);
+    if (group.hasPagination(pageCount))
+      return areaSize - getExcludingElementIndices(pageCount).length;
+    return areaSize;
   }
 
   /**
@@ -122,15 +126,17 @@ public class InventoryDynamicPageGroup extends CopyableInventoryContentView {
     synchronized (lock) {
       final int elemSize = elements.size();
       group.clear();
-      for (int i = elemSize + maxPerPage, pageIdx = 0; (i -= maxPerPage) > 0; ++pageIdx)
-        group.addPage(createPage(pageIdx, elements.subList(pageIdx * maxPerPage,
-            Math.min((1 + pageIdx) * maxPerPage, elemSize))));
+      int expectedPageCount = getExpectedNumberOfPages(maxPerPage);
+      for (int c = elemSize + maxPerPage, i = 0; (c -= maxPerPage) > 0; ++i)
+        group.addPage(createPage(expectedPageCount, i, elements.subList(i * maxPerPage,
+            Math.min((1 + i) * maxPerPage, elemSize))));
     }
   }
 
-  protected InventoryContentView createPage(int pageIndex, List<@Nullable InventoryItem> elements) {
+  protected InventoryContentView createPage(
+      int pageCount, int pageIndex, List<@Nullable InventoryItem> elements) {
     InventoryStorageLayer storage = new InventoryStorageLayer(group.getArea(), group.getParent());
-    int[] excludeIndices = getExcludingElementIndices();
+    int[] excludeIndices = getExcludingElementIndices(pageCount);
     int insertIndex = 0;
     for (InventoryItem element : elements) {
       // skip all indices that involve any of the pagination items
@@ -146,13 +152,19 @@ public class InventoryDynamicPageGroup extends CopyableInventoryContentView {
    * Returns an array of relative indices that represent pagination items, or an empty array if
    * no pagination items should be displayed.
    *
+   * @param pageCount the amount of pages expected, being passed to
+   *                  {@code InventoryPageGroup#hasPagination(int)}
    * @return excluding element indices, that should be skipped when filling elements
    * @apiNote Every invocation creates a copy of the underlying array, such that modifications on
    * the returning array have no effect on this group.
    */
-  protected int[] getExcludingElementIndices() {
-    if (!group.hasPagination())
+  protected int[] getExcludingElementIndices(int pageCount) {
+    if (!group.hasPagination(pageCount))
       return new int[0];
+    return getEnsuredExcludingElementIndices();
+  }
+
+  private int[] getEnsuredExcludingElementIndices() {
     PaginationItemType[] types = PaginationItemType.values();
     int[] excludeIndices = new int[types.length];
     for (int i = 0; i < types.length; ++i)
