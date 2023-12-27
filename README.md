@@ -105,3 +105,8 @@ Dynamic pagination is, as can already be seen, dynamic, as in pages are created 
 ```
 
 <img src="https://i.gyazo.com/c240e947b8830a4811c8c0b4c020d8bb.gif" width="250" alt="Result of dynamic pagination"/>
+
+### Multiple pagination groups in one page
+Due to layers and partitioning, you can have multiple regions within an inventory in which content is shown. For pagination this means you can (theoretically) have unlimited amount of pagination groups in one single page displayed at the same time.
+
+[ More follows ]
