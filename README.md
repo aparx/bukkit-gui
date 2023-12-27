@@ -24,10 +24,10 @@ A quite basic, but yet advanced example is the following:
         .show(player);
 ```
 
-### Dynamic and static pagination
+## Dynamic and static pagination
 Pagination can be a head-scratcher sometimes, but with this library it is easily doable. You can customize the pagination item position and the items themselves, as well as override entire behaviour of default pagination.
 
-#### Static pagination (InventoryPageGroup)
+### Static pagination (InventoryPageGroup)
 Static pagination does not inherently mean that the pages are static, it means that pages are not created or removed automatically when inventory items are added or removed (like it is done through `InventoryDynamicPageGroup`). Rather, you yourself add, remove and manage pages.
 
 ```java
@@ -52,7 +52,7 @@ Static pagination does not inherently mean that the pages are static, it means t
         .show(player);
 ```
 
-#### Dynamic pagination (InventoryDynamicPageGroup)
+### Dynamic pagination (InventoryDynamicPageGroup)
 Dynamic pagination is, as can already be seen, dynamic, as in pages are created and removed dynamically by adding and removing elements to and from a collection.
 
 [ FOLLOWS ]
