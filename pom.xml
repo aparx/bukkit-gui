@@ -20,11 +20,6 @@
     </properties>
 
     <repositories>
-        <repository>
-            <id>local-repo</id>
-            <url>file://C:\Users\vzeba\.m2\repository\</url>
-        </repository>
-
         <!-- This adds the Spigot Maven repository to the build -->
         <repository>
             <id>spigot-repo</id>
