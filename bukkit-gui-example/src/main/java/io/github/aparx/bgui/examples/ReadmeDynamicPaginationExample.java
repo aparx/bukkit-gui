@@ -37,7 +37,7 @@ public final class ReadmeDynamicPaginationExample extends BukkitGuiExamplePlugin
 
     CustomInventoryBuilder.builder()
         .title("Dynamic pages!")
-        .populate(InventoryDynamicPagePopulator.create()
+        .populate(InventoryDynamicPagePopulator.create(dimensions)
             .setElements(items)
             .getView())
         .build(/*plugin*/ this)

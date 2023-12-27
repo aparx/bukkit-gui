@@ -90,7 +90,7 @@ Dynamic pagination is, as can already be seen, dynamic, as in pages are created 
 
     CustomInventoryBuilder.builder()
         .title("Dynamic pages!")
-        .populate(InventoryDynamicPagePopulator.create()
+        .populate(InventoryDynamicPagePopulator.create(dimensions)
             .setElements(items)
             .getView())
         .build(/*plugin*/ this)
