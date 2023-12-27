@@ -25,7 +25,24 @@ A quite basic, but yet advanced example is the following:
 ```
 
 ## Installation
-[ FOLLOWS ]
+```xml
+<repositories>
+  <repository>
+    <id>jitpack.io</id>
+	<url>https://jitpack.io</url>
+  </repository>
+</repositories>
+
+<dependencies>
+  <dependency>
+    <groupId>com.github.aparx</groupId>
+    <artifactId>bukkit-gui</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </dependency>
+</dependencies>
+```
+
+[For more ways of installing read here](https://jitpack.io/#aparx/bukkit-gui/1.0.0-SNAPSHOT)
 
 ## Dynamic and static pagination
 Pagination can be a head-scratcher sometimes, but with this library it is easily doable. You can customize the pagination item position and the items themselves, as well as override entire behaviour of default pagination.
