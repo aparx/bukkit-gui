@@ -138,4 +138,6 @@ Due to layers and partitioning, you can have multiple regions within an inventor
 
 <img src="https://i.gyazo.com/800c910ba22c6a059187874600026581.gif" width="250" alt="Result of partitioned pagination groups"/>
 
+**Note:** it is generally recommended to not use the inventory builder for very complex inventories, but rather create to create custom inventory implementations or be more verbose with creating layers and content. Using the `InventoryContentFactory` will help make your complex code more reliable and recognizable.
+
 **There is so much more to this, that it will be eventually covered in a wiki in the future.**
