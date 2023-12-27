@@ -16,8 +16,6 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.framework.qual.DefaultQualifier;
 
 /**
- * Very simple example, that shows how to fill, outline and set one clickable item to an inventory.
- *
  * @author aparx (Vinzent Z.)
  * @version 2023-12-27 00:21
  * @since 1.0

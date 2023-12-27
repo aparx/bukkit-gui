@@ -109,4 +109,31 @@ Dynamic pagination is, as can already be seen, dynamic, as in pages are created 
 ### Multiple pagination groups in one page
 Due to layers and partitioning, you can have multiple regions within an inventory in which content is shown. For pagination this means you can (theoretically) have unlimited amount of pagination groups in one single page displayed at the same time.
 
-[ More follows ]
+```java
+    CustomInventoryBuilder.builder()
+        .title("Multiple pages, like magic!")
+        .populate(InventoryLayerPopulator.create()
+            // first layer is a section at the first half of the inventory
+            .addLayer((x) -> InventoryPagePopulator.create(InventorySection.of(0, 0, 3, 3), x)
+                .addPage((pageGroup) -> InventoryStoragePopulator.create(pageGroup)
+                    .fill(Material.RED_STAINED_GLASS_PANE)
+                    .getView())
+                .addPage((pageGroup) -> InventoryStoragePopulator.create(pageGroup)
+                    .fill(Material.GREEN_STAINED_GLASS_PANE)
+                    .getView())
+                .getView())
+            // second layer is a section at the second half of the inventory
+            .addLayer((x) -> InventoryPagePopulator.create(InventorySection.of(5, 0, 8, 3), x)
+                .addPage((pageGroup) -> InventoryStoragePopulator.create(pageGroup)
+                    .fill(Material.BLUE_STAINED_GLASS_PANE)
+                    .getView())
+                .addPage((pageGroup) -> InventoryStoragePopulator.create(pageGroup)
+                    .fill(Material.YELLOW_STAINED_GLASS_PANE)
+                    .getView())
+                .getView())
+            .getView())
+        .build(/*plugin*/ this)
+        .show(player);
+```
+
+<img src="https://i.gyazo.com/800c910ba22c6a059187874600026581.gif" width="250" alt="Result of partitioned pagination groups"/>
