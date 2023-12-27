@@ -29,7 +29,7 @@ public final class ReadmeStaticPaginationExample extends BukkitGuiExamplePlugin 
   public void showInventory(Player player) {
     CustomInventoryBuilder.builder()
         .title("Multiple pages, like magic!")
-        .populate(InventoryPagePopulator.create()
+        .populate(InventoryPagePopulator.create(InventoryDimensions.ofHeight(3))
             // update the placeholder for when there's no pagination item (optional)
             .setPlaceholder(InventoryItemFactory.cancel(Material.GRAY_STAINED_GLASS_PANE))
             .addPage((parent) -> InventoryStoragePopulator.create(parent)

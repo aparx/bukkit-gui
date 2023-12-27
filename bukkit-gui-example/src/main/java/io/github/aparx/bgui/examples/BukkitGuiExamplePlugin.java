@@ -3,6 +3,7 @@ package io.github.aparx.bgui.examples;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,12 +22,10 @@ public abstract class BukkitGuiExamplePlugin extends JavaPlugin implements Liste
 
   @Override
   public void onEnable() {
-    Bukkit.getPluginManager().registerEvents(this, this);
-  }
-
-  @EventHandler
-  void onInteract(PlayerInteractEvent event) {
-    showInventory(event.getPlayer());
+    Bukkit.getPluginManager().registerEvent(
+        PlayerInteractEvent.class, this, EventPriority.NORMAL, (listener, event) -> {
+          showInventory(((PlayerInteractEvent) event).getPlayer());
+        }, this);
   }
 
 }

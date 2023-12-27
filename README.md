@@ -1,5 +1,5 @@
 # bukkit-gui
-The most sophisticated open-source inventory library for Bukkit.<br/>
+A very sophisticated open-source inventory library for Bukkit.<br/>
 This library is based on [bommons](https://github.com/aparx/bommons) - a Bukkit library for common utilities.
 
 ## Ideology
@@ -56,7 +56,7 @@ Static pagination does not inherently mean that the pages are static, it means t
 ```java
     CustomInventoryBuilder.builder()
         .title("Multiple pages, like magic!")
-        .populate(InventoryPagePopulator.create()
+        .populate(InventoryPagePopulator.create(InventoryDimensions.ofHeight(3))
             // update the placeholder for when there's no pagination item (optional)
             .setPlaceholder(InventoryItemFactory.cancel(Material.GRAY_STAINED_GLASS_PANE))
             .addPage((parent) -> InventoryStoragePopulator.create(parent)
@@ -74,13 +74,14 @@ Static pagination does not inherently mean that the pages are static, it means t
         .build(plugin)
         .show(player);
 ```
+<img src="https://i.gyazo.com/06ac56b7456d0e5c3c75715bc063aa59.gif" width="250" alt="Result of static pagination"/>
 
 ### Dynamic pagination (InventoryDynamicPageGroup)
 Dynamic pagination is, as can already be seen, dynamic, as in pages are created and removed dynamically by adding and removing elements to and from a collection.
 
 ```java
-    // we explicitly state dimensions, so we can determine how many pages of redstone we want
-    InventoryDimensions dimensions = InventoryDimensions.ofHeight(4);
+    // explicitly state, so we can determine how many pages of redstone we want
+    InventoryDimensions dimensions = InventoryDimensions.ofHeight(3);
 
     // allocate ordinary amount of items, everything after the size of the inventory will
     // be put into separate inventories and pagination items will be shown
@@ -91,7 +92,11 @@ Dynamic pagination is, as can already be seen, dynamic, as in pages are created 
     CustomInventoryBuilder.builder()
         .title("Dynamic pages!")
         .populate(InventoryDynamicPagePopulator.create(dimensions)
+            .setPlaceholder(InventoryItemFactory.cancel(Material.RED_STAINED_GLASS_PANE))
             .setElements(items)
+            // same as in InventoryPagePopulator:
+            // .setItem(PaginationItemType.PREVIOUS_PAGE, ...)
+            // .setItem(PaginationItemType.NEXT_PAGE, ...)
             .getView())
         .build(plugin)
         .show(player);

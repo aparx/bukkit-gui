@@ -27,7 +27,7 @@ public final class ReadmeDynamicPaginationExample extends BukkitGuiExamplePlugin
   @Override
   public void showInventory(Player player) {
     // we explicitly state dimensions, so we can determine how many pages of redstone we want
-    InventoryDimensions dimensions = InventoryDimensions.ofHeight(4);
+    InventoryDimensions dimensions = InventoryDimensions.ofHeight(3);
 
     // allocate ordinary amount of items, everything after the size of the inventory will
     // be put into separate inventories and pagination items will be shown
