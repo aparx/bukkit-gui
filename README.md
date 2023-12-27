@@ -71,7 +71,7 @@ Static pagination does not inherently mean that the pages are static, it means t
             // .setItem(PaginationItemType.PREVIOUS_PAGE, ...)
             // .setItem(PaginationItemType.NEXT_PAGE, ...)
             .getView())
-        .build(/*plugin*/ this)
+        .build(plugin)
         .show(player);
 ```
 
@@ -93,6 +93,6 @@ Dynamic pagination is, as can already be seen, dynamic, as in pages are created 
         .populate(InventoryDynamicPagePopulator.create(dimensions)
             .setElements(items)
             .getView())
-        .build(/*plugin*/ this)
+        .build(plugin)
         .show(player);
 ```
