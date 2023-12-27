@@ -25,6 +25,8 @@ A quite basic, but yet advanced example is the following:
 ```
 
 ## Installation
+[![](https://jitpack.io/v/aparx/bukkit-gui.svg)](https://jitpack.io/#aparx/bukkit-gui)
+
 ```xml
 <repositories>
   <repository>
