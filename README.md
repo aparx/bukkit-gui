@@ -57,8 +57,6 @@ Static pagination does not inherently mean that the pages are static, it means t
     CustomInventoryBuilder.builder()
         .title("Multiple pages, like magic!")
         .populate(InventoryPagePopulator.create(InventoryDimensions.ofHeight(3))
-            // update the placeholder for when there's no pagination item (optional)
-            .setPlaceholder(InventoryItemFactory.cancel(Material.GRAY_STAINED_GLASS_PANE))
             .addPage((parent) -> InventoryStoragePopulator.create(parent)
                 .fill(Material.GREEN_STAINED_GLASS_PANE)
                 .set(parent.getArea().center(), Material.EMERALD)
@@ -67,6 +65,8 @@ Static pagination does not inherently mean that the pages are static, it means t
                 .fill(Material.RED_STAINED_GLASS_PANE)
                 .set(parent.getArea().center(), Material.REDSTONE)
                 .getView())
+            // you can update the placeholder for when there's no pagination item
+            // .setPlaceholder(InventoryItemFactory.cancel(Material.GRAY_STAINED_GLASS_PANE))
             // you can even update the pagination items if you want to
             // .setItem(PaginationItemType.PREVIOUS_PAGE, ...)
             // .setItem(PaginationItemType.NEXT_PAGE, ...)
