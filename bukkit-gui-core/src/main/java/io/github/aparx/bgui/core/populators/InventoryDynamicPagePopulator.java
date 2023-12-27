@@ -3,6 +3,7 @@ package io.github.aparx.bgui.core.populators;
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import io.github.aparx.bgui.core.content.pagination.InventoryDynamicPageGroup;
+import io.github.aparx.bgui.core.content.pagination.InventoryPageGroup;
 import io.github.aparx.bgui.core.dimension.InventoryDimensions;
 import io.github.aparx.bgui.core.dimension.InventorySection;
 import io.github.aparx.bgui.core.InventoryContentFactory;
@@ -22,7 +23,7 @@ import java.util.Collection;
  * @since 1.0
  */
 @DefaultQualifier(NonNull.class)
-public class InventoryDynamicPagePopulator implements InventoryPopulator<InventoryDynamicPageGroup> {
+public class InventoryDynamicPagePopulator extends BasePageGroupPopulator<InventoryDynamicPageGroup, InventoryDynamicPagePopulator> {
 
   private final InventoryDynamicPageGroup view;
 
@@ -106,4 +107,8 @@ public class InventoryDynamicPagePopulator implements InventoryPopulator<Invento
     return this;
   }
 
+  @Override
+  public InventoryPageGroup getPageGroup() {
+    return view.getGroup();
+  }
 }

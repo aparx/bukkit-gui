@@ -22,7 +22,7 @@ import java.util.function.Function;
  * @since 1.0
  */
 @DefaultQualifier(NonNull.class)
-public final class InventoryPagePopulator implements InventoryPopulator<InventoryPageGroup> {
+public final class InventoryPagePopulator extends BasePageGroupPopulator<InventoryPageGroup, InventoryPagePopulator> {
 
   private final InventoryPageGroup view;
 
@@ -85,24 +85,8 @@ public final class InventoryPagePopulator implements InventoryPopulator<Inventor
     return addPage(page.getView());
   }
 
-  @CanIgnoreReturnValue
-  public InventoryPagePopulator setItem(
-      PaginationItemType type, InventoryItem item) {
-    view.getItemHandler().set(type, item);
-    return this;
+  @Override
+  public InventoryPageGroup getPageGroup() {
+    return view;
   }
-
-  @CanIgnoreReturnValue
-  public InventoryPagePopulator setItem(
-      PaginationItemType type, InventoryPosition relative, InventoryItem item) {
-    view.getItemHandler().set(type, relative, item);
-    return this;
-  }
-
-  @CanIgnoreReturnValue
-  public InventoryPagePopulator setPlaceholder(@Nullable InventoryItem placeholder) {
-    view.getItemHandler().setPlaceholder(placeholder);
-    return this;
-  }
-
 }
