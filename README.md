@@ -1,11 +1,11 @@
 # bukkit-gui
 The most sophisticated open-source inventory library for Bukkit.
 
-# Ideology
+## Ideology
 The idea behind bukkit-gui is to be able to easily create very complex but also very simple inventories, that act as a user interface, with which a player or group of players can easily interact with. Inventories are updated in an interval automatically, or when players interact with items that are clickable.<br/><br/>
 In bukkit-gui an inventory is represented by a class that wraps around a mutable content attribute, which can be updated at any time. This content is an abstract class, which can represent virtually anything happening on a 2D plane. There are very useful default content views, that enable virtually anything: from layers, to pagination, to simple pages evolving around filling material.
 
-# Basic example
+## Basic example
 A quite basic, but yet advanced example is the following:
 
 ```java
