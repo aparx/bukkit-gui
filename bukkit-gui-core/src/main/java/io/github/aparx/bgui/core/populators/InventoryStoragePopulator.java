@@ -2,6 +2,7 @@ package io.github.aparx.bgui.core.populators;
 
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import io.github.aparx.bgui.core.content.pagination.InventoryDynamicPageGroup;
 import io.github.aparx.bgui.core.populators.interpolator.LineInterpolator;
 import io.github.aparx.bgui.core.dimension.InventoryDimensions;
 import io.github.aparx.bgui.core.dimension.InventoryPosition;
@@ -40,27 +41,31 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
    * @see InventoryContentFactory#storageLayer(InventorySection, InventoryContentView)
    * @see InventoryContentFactory#storageLayer(InventoryDimensions, InventoryContentView)
    */
-  public static InventoryStoragePopulator create(InventoryStorageLayer view) {
+  public static InventoryStoragePopulator populate(InventoryStorageLayer view) {
     Preconditions.checkNotNull(view, "View must not be null");
     return new InventoryStoragePopulator(view);
   }
 
+  /** @see #populate(InventoryStorageLayer) */
   public static InventoryStoragePopulator create(InventoryDimensions dimensions) {
     Preconditions.checkNotNull(dimensions, "Dimensions must not be null");
-    return create(InventoryContentFactory.storageLayer(dimensions));
+    return populate(InventoryContentFactory.storageLayer(dimensions));
   }
 
+  /** @see #populate(InventoryStorageLayer) */
   public static InventoryStoragePopulator create(
       InventorySection section, InventoryContentView parent) {
     Preconditions.checkNotNull(section, "Section must not be null");
-    return create(InventoryContentFactory.storageLayer(section, parent));
+    return populate(InventoryContentFactory.storageLayer(section, parent));
   }
 
+  /** @see #populate(InventoryStorageLayer) */
   public static InventoryStoragePopulator create(InventoryContentView parent) {
     Preconditions.checkNotNull(parent, "Parent must not be null");
-    return create(InventoryContentFactory.storageLayer(parent));
+    return populate(InventoryContentFactory.storageLayer(parent));
   }
 
+  /** @see #populate(InventoryStorageLayer) */
   public static InventoryStoragePopulator create() {
     return create(InventoryDimensions.DEFAULT_DIMENSIONS);
   }

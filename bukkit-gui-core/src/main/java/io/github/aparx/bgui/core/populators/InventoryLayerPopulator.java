@@ -5,6 +5,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import io.github.aparx.bgui.core.InventoryContentFactory;
 import io.github.aparx.bgui.core.InventoryContentView;
 import io.github.aparx.bgui.core.content.InventoryLayerGroup;
+import io.github.aparx.bgui.core.content.pagination.InventoryPageGroup;
 import io.github.aparx.bgui.core.dimension.InventoryDimensions;
 import io.github.aparx.bgui.core.dimension.InventorySection;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -34,27 +35,31 @@ public class InventoryLayerPopulator implements InventoryPopulator<InventoryLaye
    * @see InventoryContentFactory#layerGroup(InventorySection, InventoryContentView)
    * @see InventoryContentFactory#layerGroup(InventoryDimensions, InventoryContentView)
    */
-  public static InventoryLayerPopulator create(InventoryLayerGroup group) {
+  public static InventoryLayerPopulator populate(InventoryLayerGroup group) {
     Preconditions.checkNotNull(group, "Group must not be null");
     return new InventoryLayerPopulator(group);
   }
 
+  /** @see #populate(InventoryLayerGroup) */
   public static InventoryLayerPopulator create(InventoryDimensions dimensions) {
     Preconditions.checkNotNull(dimensions, "Dimensions must not be null");
-    return create(InventoryContentFactory.layerGroup(dimensions));
+    return populate(InventoryContentFactory.layerGroup(dimensions));
   }
 
+  /** @see #populate(InventoryLayerGroup) */
   public static InventoryLayerPopulator create(
       InventorySection section, InventoryContentView parent) {
     Preconditions.checkNotNull(section, "Section must not be null");
-    return create(InventoryContentFactory.layerGroup(section, parent));
+    return populate(InventoryContentFactory.layerGroup(section, parent));
   }
 
+  /** @see #populate(InventoryLayerGroup) */
   public static InventoryLayerPopulator create(InventoryContentView parent) {
     Preconditions.checkNotNull(parent, "Parent must not be null");
-    return create(InventoryContentFactory.layerGroup(parent));
+    return populate(InventoryContentFactory.layerGroup(parent));
   }
 
+  /** @see #populate(InventoryLayerGroup) */
   public static InventoryLayerPopulator create() {
     return create(InventoryDimensions.DEFAULT_DIMENSIONS);
   }

@@ -2,6 +2,7 @@ package io.github.aparx.bgui.core.populators;
 
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import io.github.aparx.bgui.core.content.InventoryLayerGroup;
 import io.github.aparx.bgui.core.content.pagination.InventoryDynamicPageGroup;
 import io.github.aparx.bgui.core.content.pagination.InventoryPageGroup;
 import io.github.aparx.bgui.core.dimension.InventoryDimensions;
@@ -38,27 +39,31 @@ public class InventoryDynamicPagePopulator extends BasePageGroupPopulator<Invent
    * @see InventoryContentFactory#dynamicPageGroup(InventorySection, InventoryContentView)
    * @see InventoryContentFactory#dynamicPageGroup(InventoryDimensions, InventoryContentView)
    */
-  public static InventoryDynamicPagePopulator create(InventoryDynamicPageGroup group) {
+  public static InventoryDynamicPagePopulator populate(InventoryDynamicPageGroup group) {
     Preconditions.checkNotNull(group, "Group must not be null");
     return new InventoryDynamicPagePopulator(group);
   }
 
+  /** @see #populate(InventoryDynamicPageGroup) */
   public static InventoryDynamicPagePopulator create(InventoryDimensions dimensions) {
     Preconditions.checkNotNull(dimensions, "Dimensions must not be null");
-    return create(InventoryContentFactory.dynamicPageGroup(dimensions));
+    return populate(InventoryContentFactory.dynamicPageGroup(dimensions));
   }
 
+  /** @see #populate(InventoryDynamicPageGroup) */
   public static InventoryDynamicPagePopulator create(
       InventorySection section, InventoryContentView parent) {
     Preconditions.checkNotNull(section, "Section must not be null");
-    return create(InventoryContentFactory.dynamicPageGroup(section, parent));
+    return populate(InventoryContentFactory.dynamicPageGroup(section, parent));
   }
 
+  /** @see #populate(InventoryDynamicPageGroup) */
   public static InventoryDynamicPagePopulator create(InventoryContentView parent) {
     Preconditions.checkNotNull(parent, "Parent must not be null");
-    return create(InventoryContentFactory.dynamicPageGroup(parent));
+    return populate(InventoryContentFactory.dynamicPageGroup(parent));
   }
 
+  /** @see #populate(InventoryDynamicPageGroup) */
   public static InventoryDynamicPagePopulator create() {
     return create(InventoryDimensions.DEFAULT_DIMENSIONS);
   }

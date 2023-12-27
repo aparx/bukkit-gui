@@ -3,15 +3,11 @@ package io.github.aparx.bgui.core.populators;
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import io.github.aparx.bgui.core.content.pagination.InventoryPageGroup;
-import io.github.aparx.bgui.core.content.pagination.PaginationItemType;
 import io.github.aparx.bgui.core.dimension.InventoryDimensions;
-import io.github.aparx.bgui.core.dimension.InventoryPosition;
 import io.github.aparx.bgui.core.dimension.InventorySection;
 import io.github.aparx.bgui.core.InventoryContentFactory;
 import io.github.aparx.bgui.core.InventoryContentView;
-import io.github.aparx.bgui.core.item.InventoryItem;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.DefaultQualifier;
 
 import java.util.function.Function;
@@ -37,27 +33,31 @@ public final class InventoryPagePopulator extends BasePageGroupPopulator<Invento
    * @see InventoryContentFactory#pageGroup(InventorySection, InventoryContentView)
    * @see InventoryContentFactory#pageGroup(InventoryDimensions, InventoryContentView)
    */
-  public static InventoryPagePopulator create(InventoryPageGroup group) {
+  public static InventoryPagePopulator populate(InventoryPageGroup group) {
     Preconditions.checkNotNull(group, "Group must not be null");
     return new InventoryPagePopulator(group);
   }
 
+  /** @see #populate(InventoryPageGroup) */
   public static InventoryPagePopulator create(InventoryDimensions dimensions) {
     Preconditions.checkNotNull(dimensions, "Dimensions must not be null");
-    return create(InventoryContentFactory.pageGroup(dimensions));
+    return populate(InventoryContentFactory.pageGroup(dimensions));
   }
 
+  /** @see #populate(InventoryPageGroup) */
   public static InventoryPagePopulator create(
       InventorySection section, InventoryContentView parent) {
     Preconditions.checkNotNull(section, "Section must not be null");
-    return create(InventoryContentFactory.pageGroup(section, parent));
+    return populate(InventoryContentFactory.pageGroup(section, parent));
   }
 
+  /** @see #populate(InventoryPageGroup) */
   public static InventoryPagePopulator create(InventoryContentView parent) {
     Preconditions.checkNotNull(parent, "Parent must not be null");
-    return create(InventoryContentFactory.pageGroup(parent));
+    return populate(InventoryContentFactory.pageGroup(parent));
   }
 
+  /** @see #populate(InventoryPageGroup) */
   public static InventoryPagePopulator create() {
     return create(InventoryDimensions.DEFAULT_DIMENSIONS);
   }
