@@ -1,5 +1,5 @@
 name: bukkit-gui-example
 # main: io.github.aparx.bgui.examples.<TARGET EXAMPLE>
-main: io.github.aparx.bgui.examples.LayerMultiPaginationExample
+main: io.github.aparx.bgui.examples.ReadmeLayerMultiPaginationExample
 version: '${project.version}'
 api-version: 1.14

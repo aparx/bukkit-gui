@@ -16,7 +16,7 @@ import org.checkerframework.framework.qual.DefaultQualifier;
  * @since 1.0
  */
 @DefaultQualifier(NonNull.class)
-public final class LayerMultiPaginationExample extends BukkitGuiExamplePlugin {
+public final class ReadmeLayerMultiPaginationExample extends BukkitGuiExamplePlugin {
 
   @Override
   public void showInventory(Player player) {

@@ -132,8 +132,10 @@ Due to layers and partitioning, you can have multiple regions within an inventor
                     .getView())
                 .getView())
             .getView())
-        .build(/*plugin*/ this)
+        .build(plugin)
         .show(player);
 ```
 
 <img src="https://i.gyazo.com/800c910ba22c6a059187874600026581.gif" width="250" alt="Result of partitioned pagination groups"/>
+
+**There is so much more to this, that it will be eventually covered in a wiki in the future.**
