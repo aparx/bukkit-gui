@@ -40,7 +40,7 @@ A quite basic, but yet advanced example is the following:
   <dependency>
     <groupId>com.github.aparx</groupId>
     <artifactId>bukkit-gui</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>2.0.0-beta.1</version>
   </dependency>
 </dependencies>
 ```
