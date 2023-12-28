@@ -28,11 +28,11 @@ public class LineInterpolator extends InventoryPositionInterpolator {
     this.start = start;
 
     if (stop.getIndex() != start.getIndex())
-      this.stop = stop.add((!stop.isAtColumnEnd() && !start.isAtColumnEnd()
+      this.stop = stop.add((stop.hasFreeColumnSpace() && start.hasFreeColumnSpace()
           ? Integer.compare(stop.getColumn(), start.getColumn())
           : 0), Integer.compare(stop.getRow(), start.getRow()));
     else
-      this.stop = (!stop.isAtColumnEnd() ? stop.add(1, 0) : stop);
+      this.stop = (stop.hasFreeColumnSpace() ? stop.add(1, 0) : stop);
   }
 
   public InventoryPosition getStart() {

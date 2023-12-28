@@ -1,15 +1,10 @@
 package io.github.aparx.bgui.examples;
 
-import io.github.aparx.bgui.core.content.pagination.PaginationItemType;
 import io.github.aparx.bgui.core.dimension.InventoryDimensions;
-import io.github.aparx.bgui.core.dimension.InventoryPosition;
 import io.github.aparx.bgui.core.CustomInventoryBuilder;
 import io.github.aparx.bgui.core.item.InventoryItemFactory;
 import io.github.aparx.bgui.core.populators.InventoryPagePopulator;
 import io.github.aparx.bgui.core.populators.InventoryStoragePopulator;
-import io.github.aparx.bommons.ticks.TickDuration;
-import io.github.aparx.bommons.ticks.TickTimeUnit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;

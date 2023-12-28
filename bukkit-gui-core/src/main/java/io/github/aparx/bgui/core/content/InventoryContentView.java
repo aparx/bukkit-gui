@@ -1,4 +1,4 @@
-package io.github.aparx.bgui.core;
+package io.github.aparx.bgui.core.content;
 
 import com.google.common.base.Preconditions;
 import io.github.aparx.bgui.core.item.InventoryItem;
@@ -12,6 +12,16 @@ import org.checkerframework.dataflow.qual.Deterministic;
 import org.checkerframework.framework.qual.DefaultQualifier;
 
 /**
+ * Abstract class representing an adapter and access-point to an underlying two-dimensional pane.
+ * <p>The content view is the primary building block of bukkit-gui. It acts as an adapter, with
+ * which an item can be requested for a specific (absolute) inventory position. By default
+ * definition, a requested item that is null equals out to not being existing. If the underlying
+ * view represents a part of a structurally complex layer group, null represents transparency.
+ * <p>A view always contains an optional parent, that is mostly only used for reference to make a
+ * relative position absolute, so that an item can be requested correctly through this access-point.
+ * <p>A view is not only defined by its parent, but also through its {@code area}, which is
+ * relative to the parent area.
+ *
  * @author aparx (Vinzent Z.)
  * @version 2023-12-23 15:25
  * @since 1.0
@@ -20,12 +30,18 @@ import org.checkerframework.framework.qual.DefaultQualifier;
 public abstract class InventoryContentView {
 
   private final @Nullable InventorySection parent;
-  private final InventorySection area;
+  private final InventorySection absoluteArea, relativeArea;
+  private @Nullable InventorySection space;
 
   public InventoryContentView(InventorySection area, @Nullable InventorySection parent) {
     Preconditions.checkNotNull(area, "Area must not be null");
     this.parent = parent;
-    this.area = area;
+    this.relativeArea = area;
+    if (hasParent()) {
+      this.absoluteArea = area.toAbsolute(parent);
+      Preconditions.checkArgument(parent.includes(absoluteArea), "Area is not within parent");
+    } else
+      this.absoluteArea = area;
   }
 
   /**
@@ -58,8 +74,48 @@ public abstract class InventoryContentView {
   public abstract @Nullable InventoryItem get(
       @Nullable InventoryItemAccessor accessor, InventoryPosition position);
 
+  /**
+   * Returns the totally absolute area.
+   * <p>Totally absolute means, that it is relative to the root (being the inventory itself).
+   *
+   * @return the absolute area in which this view acts
+   * @see #getRelativeArea()
+   */
   public final InventorySection getArea() {
-    return area;
+    return absoluteArea;
+  }
+
+  /**
+   * Returns the relative area, being relative to this parent (if given).
+   * <p>The relative area is a kind of offset to the parent. To determine the totally absolute
+   * area (so including the absolute positions), the relative area is simply offset by the parent
+   * area. More specifically, the absolute area equals the relative area plus the beginning index
+   * of the parent. If no parent is given, the relative area is equivalent to the absolute area.
+   * <p>The relative area is the area, that is initially given to the view.
+   *
+   * @return the relative area
+   */
+  public final InventorySection getRelativeArea() {
+    return relativeArea;
+  }
+
+  /**
+   * Returns a section that represents the occupying space, starting at {@code [0, 0]} and
+   * expanding towards the dimensions of this view.
+   *
+   * @return the section's occupying space in a 2D pane (beginning offset subtracted)
+   */
+  public final InventorySection getSpace() {
+    if (space != null)
+      return space;
+    synchronized (this) {
+      if (space != null)
+        return space;
+      InventoryPosition end = relativeArea.getEnd(), begin = relativeArea.getBegin();
+      return (space = InventorySection.of(InventoryPosition.ofZero(), InventoryPosition.ofPoint(
+          end.getColumn() - begin.getColumn(), end.getRow() - begin.getRow()
+      )));
+    }
   }
 
   @Deterministic
@@ -84,33 +140,15 @@ public abstract class InventoryContentView {
   public int toAreaElementIndex(InventoryPosition position) {
     // positionalIndex is the absolute position (not the element index!)
     if (!getArea().includes(position)) return -1;
-    InventoryPosition begin = area.getBegin();
+    InventoryPosition begin = absoluteArea.getBegin();
     return (position.getIndex() - begin.getIndex())
         - (position.getRow() - begin.getRow())
         * (position.getWidth() - getDimensions().getWidth());
   }
 
-  /**
-   * Returns the given relative {@code position} as an absolute position, relative to the parent.
-   *
-   * <p>Assuming the {@code area} begins at {@code [1, 1]} and ends at {@code [3, 3]},
-   * following examples can be used:
-   * <ul>
-   *   <li>{@code fromRelative(InventoryPosition.ofFirst()) ::= [1, 1]}</li>
-   *   <li>{@code fromRelative(InventoryPosition.ofPoint(0, 0)) ::= [1, 1]}</li>
-   *   <li>{@code fromRelative(InventoryPosition.ofLast(getArea())) ::= [3, 3]}</li>
-   *   <li>{@code fromRelative(InventoryPosition.ofPoint(2, 2)) ::= [3, 3]}</li>
-   *   <li>{@code fromRelative(InventoryPosition.ofPoint(1, 0)) ::= [2, 1]}</li>
-   *   <li>{@code fromRelative(InventoryPosition.ofPoint(2, 0)) ::= [3, 1]}</li>
-   *   <li>{@code fromRelative(InventoryPosition.ofPoint(3, 0)) ::= [4, 1]} <b>(outside)</b></li>
-   *   <li>{@code fromRelative(InventoryPosition.ofPoint(0, 1)) ::= [1, 2]}</li>
-   * </ul>
-   *
-   * @param position the relative position to transform into a normal position
-   * @return the new non-relative position
-   */
+  /** @see InventorySection#toAbsolute(InventoryPosition) */
   public InventoryPosition toAbsolute(InventoryPosition position) {
-    return (parent != null ? position.toRelative(parent) : position).shift(area.getBegin().getIndex());
+    return absoluteArea.toAbsolute(position);
   }
 
 }

@@ -43,9 +43,9 @@ public final class PaginationItemHandler {
   public PaginationItemHandler(InventoryPageGroup group) {
     Preconditions.checkNotNull(group);
     this.group = group;
-    InventoryPosition lastPosition = InventoryPosition.ofLast(group.getArea());
+    InventoryPosition lastPosition = InventoryPosition.ofLast(group.getSpace());
     set(PaginationItemType.PREVIOUS_PAGE,
-        lastPosition.shift(1 - group.getArea().getDimensions().getWidth()),
+        lastPosition.shift(1 - group.getDimensions().getWidth()),
         DEFAULT_PREVIOUS_PAGE);
     set(PaginationItemType.NEXT_PAGE, lastPosition, DEFAULT_NEXT_PAGE);
     setPlaceholder(DEFAULT_PLACEHOLDER);

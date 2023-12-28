@@ -4,10 +4,8 @@ import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import io.github.aparx.bgui.core.dimension.InventoryPosition;
 import io.github.aparx.bgui.core.dimension.InventorySection;
-import io.github.aparx.bgui.core.CopyableInventoryContentView;
 import io.github.aparx.bgui.core.item.InventoryItem;
 import io.github.aparx.bgui.core.item.InventoryItemAccessor;
-import io.github.aparx.bgui.core.InventoryContentView;
 import org.apache.commons.lang3.Validate;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -16,6 +14,7 @@ import org.checkerframework.framework.qual.DefaultQualifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author aparx (Vinzent Z.)
@@ -36,7 +35,7 @@ public class InventoryLayerGroup extends CopyableInventoryContentView {
 
   @Override
   public InventoryContentView copy() {
-    InventoryLayerGroup layerGroup = new InventoryLayerGroup(getArea(), getParent());
+    InventoryLayerGroup layerGroup = new InventoryLayerGroup(getRelativeArea(), getParent());
     layerGroup.layers.addAll(layers);
     return layerGroup;
   }
@@ -48,7 +47,10 @@ public class InventoryLayerGroup extends CopyableInventoryContentView {
   public void addLayer(InventoryContentView layerView) {
     Preconditions.checkNotNull(layerView, "Layer must not be null");
     InventorySection section = layerView.getArea();
-    Preconditions.checkArgument(getArea().includes(section), "Layer is not within page");
+    Preconditions.checkArgument((layerView.hasParent()
+            ? Objects.requireNonNull(layerView.getParent())
+            : getArea()).includes(section),
+        "Layer is out of parent");
     layers.add(layerView);
   }
 

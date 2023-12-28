@@ -20,7 +20,7 @@ import java.util.function.Function;
 public class MutableInventoryItem implements InventoryItem {
 
   private @Nullable Function<InventoryItemAccessor, @Nullable ItemStack> itemFactory;
-  private @Nullable InventoryItemClickAction clickHandler;
+  private @Nullable InventoryClickHandler clickHandler;
 
   public MutableInventoryItem(
       @Nullable Function<InventoryItemAccessor, @Nullable ItemStack> itemFactory) {
@@ -49,11 +49,11 @@ public class MutableInventoryItem implements InventoryItem {
     return itemFactory;
   }
 
-  public void setClickHandler(@Nullable InventoryItemClickAction clickHandle) {
+  public void setClickHandler(@Nullable InventoryClickHandler clickHandle) {
     this.clickHandler = clickHandle;
   }
 
-  public @Nullable InventoryItemClickAction getClickHandler() {
+  public @Nullable InventoryClickHandler getClickHandler() {
     return clickHandler;
   }
 

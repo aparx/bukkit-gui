@@ -9,7 +9,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @version 2023-12-23 15:01
  * @since 1.0
  */
-public interface InventoryItem extends InventoryItemClickAction {
+public interface InventoryItem extends InventoryClickHandler {
 
   @Nullable ItemStack get(@NonNull InventoryItemAccessor accessor);
 

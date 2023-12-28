@@ -5,8 +5,8 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import io.github.aparx.bgui.core.content.pagination.InventoryPageGroup;
 import io.github.aparx.bgui.core.dimension.InventoryDimensions;
 import io.github.aparx.bgui.core.dimension.InventorySection;
-import io.github.aparx.bgui.core.InventoryContentFactory;
-import io.github.aparx.bgui.core.InventoryContentView;
+import io.github.aparx.bgui.core.content.InventoryContentFactory;
+import io.github.aparx.bgui.core.content.InventoryContentView;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.framework.qual.DefaultQualifier;
 

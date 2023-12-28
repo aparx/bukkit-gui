@@ -26,7 +26,7 @@ public final class ReadmeBasicExample extends BukkitGuiExamplePlugin {
     CustomInventoryBuilder.builder()
         .title("Teleport inventory")
         // we update the inventory every second
-        .interval(TickDuration.ofOne(TickTimeUnit.SECONDS))
+        .updateInterval(TickDuration.ofOne(TickTimeUnit.SECONDS))
         .populate(InventoryStoragePopulator.create()
             .fill(Material.GRAY_STAINED_GLASS_PANE)
             .outline(Material.RED_STAINED_GLASS_PANE)

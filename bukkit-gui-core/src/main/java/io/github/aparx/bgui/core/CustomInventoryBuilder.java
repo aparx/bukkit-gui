@@ -3,6 +3,9 @@ package io.github.aparx.bgui.core;
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CheckReturnValue;
+import io.github.aparx.bgui.core.content.CopyableInventoryContentView;
+import io.github.aparx.bgui.core.content.InventoryContentFactory;
+import io.github.aparx.bgui.core.content.InventoryContentView;
 import io.github.aparx.bgui.core.content.InventoryStorageLayer;
 import io.github.aparx.bgui.core.populators.InventoryDynamicPagePopulator;
 import io.github.aparx.bgui.core.populators.InventoryPagePopulator;
@@ -45,8 +48,33 @@ public final class CustomInventoryBuilder {
     return title;
   }
 
+  /**
+   * Updates the interval with which this inventory updates. If null is supplied, a default
+   * interval is being used at build.
+   *
+   * @param updateInterval the interval to be used
+   * @return this builder
+   * @see #updateInterval(TickDuration)
+   * @deprecated This method was replaced in favor of {@code updateInterval}, which
+   * works equivalently, with the difference being the more fitting name. This method has not yet
+   * been removed due to backwards compatibility, but will (!) be removed in near-future.
+   */
+  @Deprecated(forRemoval = true)
   @CanIgnoreReturnValue
   public CustomInventoryBuilder interval(@Nullable TickDuration updateInterval) {
+    this.updateInterval = updateInterval;
+    return this;
+  }
+
+  /**
+   * Updates the interval with which this inventory updates. If null is supplied, a default
+   * interval is being used at build.
+   *
+   * @param updateInterval the target new interval
+   * @return this builder
+   */
+  @CanIgnoreReturnValue
+  public CustomInventoryBuilder updateInterval(@Nullable TickDuration updateInterval) {
     this.updateInterval = updateInterval;
     return this;
   }
@@ -98,6 +126,10 @@ public final class CustomInventoryBuilder {
     return this;
   }
 
+  /**
+   * @see #populate(InventoryContentView, BiConsumer)
+   * @see InventoryContentFactory#storageLayer(InventoryDimensions)
+   */
   @CanIgnoreReturnValue
   public CustomInventoryBuilder populate(
       InventoryDimensions dimensions,

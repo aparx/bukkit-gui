@@ -47,6 +47,18 @@ public final class InventoryPosition implements Comparable<InventoryPosition>,
     return ZERO_POSITION;
   }
 
+  public static InventoryPosition ofZero(int width) {
+    return ofIndex(0, width);
+  }
+
+  public static InventoryPosition ofZero(InventoryDimensions dimensions) {
+    return ofIndex(0, dimensions.getWidth());
+  }
+
+  public static InventoryPosition ofZero(InventorySizable container) {
+    return ofZero(container.getDimensions());
+  }
+
   public static InventoryPosition ofLast(InventorySection section) {
     return ofIndex(section.size() - 1, section.getDimensions().getWidth());
   }
@@ -61,6 +73,14 @@ public final class InventoryPosition implements Comparable<InventoryPosition>,
     Preconditions.checkArgument(column >= 0, "Column must not be negative");
     Preconditions.checkArgument(row >= 0, "Row must not be negative");
     return positionInstancePool.atPoint(column, row, width);
+  }
+
+  public static InventoryPosition ofPoint(int column, int row, InventoryDimensions dimensions) {
+    return ofPoint(column, row, dimensions.getWidth());
+  }
+
+  public static InventoryPosition ofPoint(int column, int row, InventorySizable dimensions) {
+    return ofPoint(column, row, dimensions.getDimensions());
   }
 
   public static InventoryPosition ofPoint(int column, int row) {
@@ -84,7 +104,8 @@ public final class InventoryPosition implements Comparable<InventoryPosition>,
   }
 
   public static int toIndex(int column, int row, int width) {
-    Preconditions.checkArgument(column < width, "Column must be less than the width", column, width);
+    Preconditions.checkArgument(column < width, "Column must be less than the width", column,
+        width);
     return column + Math.max(row * width, 0);
   }
 
@@ -103,11 +124,13 @@ public final class InventoryPosition implements Comparable<InventoryPosition>,
   }
 
   public static InventoryPosition getMin(InventoryPosition x, InventoryPosition y) {
-    return ofPoint(Math.min(x.getColumn(), y.getColumn()), Math.min(x.getRow(), y.getRow()));
+    return ofPoint(Math.min(x.getColumn(), y.getColumn()), Math.min(x.getRow(), y.getRow()),
+        Math.min(x.getWidth(), y.getWidth()));
   }
 
   public static InventoryPosition getMax(InventoryPosition x, InventoryPosition y) {
-    return ofPoint(Math.max(x.getColumn(), y.getColumn()), Math.max(x.getRow(), y.getRow()));
+    return ofPoint(Math.max(x.getColumn(), y.getColumn()), Math.max(x.getRow(), y.getRow()),
+        Math.max(x.getWidth(), y.getWidth()));
   }
 
   public static InventoryPosition deserialize(Map<?, ?> args) {
@@ -131,6 +154,14 @@ public final class InventoryPosition implements Comparable<InventoryPosition>,
     return other.getIndex() - getIndex();
   }
 
+  public InventoryPosition convert(int width) {
+    return ofPoint(row, column, width);
+  }
+
+  public InventoryPosition convert(InventoryDimensions dimensions) {
+    return convert(dimensions.getWidth());
+  }
+
   /**
    * Returns a position relative to given {@code dimensions}.
    *
@@ -142,23 +173,14 @@ public final class InventoryPosition implements Comparable<InventoryPosition>,
     return (this.width != width ? ofIndex(getIndex(), width) : this);
   }
 
-  /**
-   * Returns a new position that is set relative to {@code section}'s boundaries, such that a
-   * returning zero position would represent the closest top left corner within a matrix of
-   * {@code section} (so the beginning position).
-   *
-   * @param section the section to make this position relative to
-   * @return the relative position
-   * @throws IllegalArgumentException if this position lies outside {@code section}, such that
-   *                                  {@code section.includes(this)} evaluates false.
-   * @see InventorySection#includes(InventoryPosition)
-   */
+  /** @see InventorySection#toRelative(InventoryPosition) */
   public InventoryPosition toRelative(InventorySection section) {
-    Preconditions.checkArgument(section.includes(this), "Section does not contain position");
-    InventoryPosition begin = section.getBegin();
-    int width = section.getDimensions().getWidth();
-    return InventoryPosition.ofIndex((getIndex() - begin.getIndex())
-        - (getRow() - begin.getRow()) * (getWidth() - width), width);
+    return section.toRelative(this);
+  }
+
+  /** @see InventorySection#toAbsolute(InventoryPosition) */
+  public InventoryPosition toAbsolute(InventorySection section) {
+    return section.toAbsolute(this);
   }
 
   @CheckReturnValue
@@ -225,8 +247,8 @@ public final class InventoryPosition implements Comparable<InventoryPosition>,
     return column;
   }
 
-  public boolean isAtColumnEnd() {
-    return column == width - 1;
+  public boolean hasFreeColumnSpace() {
+    return column != width - 1;
   }
 
   public int getRow() {
@@ -244,6 +266,14 @@ public final class InventoryPosition implements Comparable<InventoryPosition>,
     if (object == null || getClass() != object.getClass()) return false;
     InventoryPosition that = (InventoryPosition) object;
     return index == that.index && width == that.width;
+  }
+
+  public boolean equalIndex(int index) {
+    return this.index == index;
+  }
+
+  public boolean equalIndex(@Nullable InventoryPosition position) {
+    return position != null && position.getIndex() == index;
   }
 
   @Override

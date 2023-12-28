@@ -19,6 +19,7 @@ import java.util.function.IntConsumer;
 public final class InventoryDimensions implements ConfigurationSerializable {
 
   public static final InventoryDimensions DEFAULT_DIMENSIONS = InventoryDimensions.ofHeight(4);
+  public static final InventoryDimensions DISPENSER = InventoryDimensions.of(3, 3);
 
   public static final int DEFAULT_WIDTH = 9;
 

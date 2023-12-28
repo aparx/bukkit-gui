@@ -57,46 +57,47 @@ public final class InventoryItemFactory {
   }
 
   public static MutableInventoryItem cancel(
-      @Nullable ItemStack itemStack, @Nullable InventoryItemClickAction clickAction) {
+      @Nullable ItemStack itemStack, @Nullable InventoryClickHandler clickAction) {
     return builder().item(itemStack).cancel().addClickHandler(clickAction).build();
   }
 
   public static MutableInventoryItem cancel(
-      @Nullable WrappedItemStack itemStack, @Nullable InventoryItemClickAction clickAction) {
+      @Nullable WrappedItemStack itemStack, @Nullable InventoryClickHandler clickAction) {
     return builder().item(itemStack).cancel().addClickHandler(clickAction).build();
   }
 
   public static MutableInventoryItem cancel(
-      Material material, @Nullable InventoryItemClickAction clickAction) {
+      Material material, @Nullable InventoryClickHandler clickAction) {
     return cancel(new ItemStack(material), clickAction);
   }
 
   public static MutableInventoryItem cancel(
-      Material material, int amount, @Nullable InventoryItemClickAction clickAction) {
+      Material material, int amount, @Nullable InventoryClickHandler clickAction) {
     return cancel(new ItemStack(material, amount), clickAction);
   }
 
   public static class InventoryItemBuilder {
     private @Nullable Function<InventoryItemAccessor, @Nullable ItemStack> itemFactory;
-    private @Nullable InventoryItemClickAction clickAction;
+    private @Nullable InventoryClickHandler handler;
 
     protected InventoryItemBuilder() {}
 
     @CanIgnoreReturnValue
-    public InventoryItemBuilder setClickHandler(@Nullable InventoryItemClickAction action) {
-      this.clickAction = action;
+    public InventoryItemBuilder setClickHandler(@Nullable InventoryClickHandler handler) {
+      this.handler = handler;
       return this;
     }
 
     @CanIgnoreReturnValue
-    public InventoryItemBuilder addClickHandler(@Nullable InventoryItemClickAction action) {
-      this.clickAction = (clickAction != null ? clickAction.andThen(action) : action);
+    public InventoryItemBuilder addClickHandler(@Nullable InventoryClickHandler handler) {
+      this.handler = (this.handler != null ? this.handler.andThen(handler) : handler);
       return this;
     }
 
     @CanIgnoreReturnValue
     public InventoryItemBuilder cancel() {
-      return addClickHandler(InventoryItemClickAction.CANCELLING);
+      this.handler = (handler != null ? handler.cancel() : InventoryClickHandler.CANCEL);
+      return this;
     }
 
     @CanIgnoreReturnValue
@@ -118,16 +119,10 @@ public final class InventoryItemFactory {
       return this;
     }
 
-    @CanIgnoreReturnValue
-    public InventoryItemBuilder item(@Nullable WrappedItemStack itemStack) {
-      this.itemFactory = (itemStack != null ? (accessor) -> itemStack.getItemStack() : null);
-      return this;
-    }
-
     @CheckReturnValue
     public MutableInventoryItem build() {
       MutableInventoryItem inventoryItem = new MutableInventoryItem(itemFactory);
-      inventoryItem.setClickHandler(clickAction);
+      inventoryItem.setClickHandler(handler);
       return inventoryItem;
     }
   }

@@ -1,7 +1,5 @@
-package io.github.aparx.bgui.core;
+package io.github.aparx.bgui.core.content;
 
-import io.github.aparx.bgui.core.content.InventoryLayerGroup;
-import io.github.aparx.bgui.core.content.InventoryStorageLayer;
 import io.github.aparx.bgui.core.content.pagination.InventoryDynamicPageGroup;
 import io.github.aparx.bgui.core.content.pagination.InventoryPageGroup;
 import io.github.aparx.bgui.core.dimension.InventoryDimensions;
@@ -40,7 +38,7 @@ public final class InventoryContentFactory {
   }
 
   public static InventoryLayerGroup layerGroup(InventoryContentView parent) {
-    return layerGroup(parent.getArea(), parent);
+    return layerGroup(parent.getSpace(), parent);
   }
 
   // +------------------ InventoryStorageLayer ------------------+
@@ -64,7 +62,7 @@ public final class InventoryContentFactory {
   }
 
   public static InventoryStorageLayer storageLayer(InventoryContentView parent) {
-    return storageLayer(parent.getArea(), parent);
+    return storageLayer(parent.getSpace(), parent);
   }
 
   // +------------------ InventoryPageGroup ------------------+
@@ -88,7 +86,7 @@ public final class InventoryContentFactory {
   }
 
   public static InventoryPageGroup pageGroup(InventoryContentView parent) {
-    return pageGroup(parent.getArea(), parent);
+    return pageGroup(parent.getSpace(), parent);
   }
 
   // +------------------ InventoryDynamicPageGroup ------------------+
@@ -112,7 +110,7 @@ public final class InventoryContentFactory {
   }
 
   public static InventoryDynamicPageGroup dynamicPageGroup(InventoryContentView parent) {
-    return dynamicPageGroup(parent.getArea(), parent);
+    return dynamicPageGroup(parent.getSpace(), parent);
   }
 
   public static InventoryDynamicPageGroup dynamicPageGroup(InventoryPageGroup group) {

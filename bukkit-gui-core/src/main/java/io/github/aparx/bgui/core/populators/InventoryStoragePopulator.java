@@ -2,16 +2,15 @@ package io.github.aparx.bgui.core.populators;
 
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import io.github.aparx.bgui.core.content.pagination.InventoryDynamicPageGroup;
 import io.github.aparx.bgui.core.populators.interpolator.LineInterpolator;
 import io.github.aparx.bgui.core.dimension.InventoryDimensions;
 import io.github.aparx.bgui.core.dimension.InventoryPosition;
 import io.github.aparx.bgui.core.dimension.InventorySection;
-import io.github.aparx.bgui.core.InventoryContentFactory;
-import io.github.aparx.bgui.core.InventoryContentView;
+import io.github.aparx.bgui.core.content.InventoryContentFactory;
+import io.github.aparx.bgui.core.content.InventoryContentView;
 import io.github.aparx.bgui.core.content.InventoryStorageLayer;
 import io.github.aparx.bgui.core.item.InventoryItem;
-import io.github.aparx.bgui.core.item.InventoryItemClickAction;
+import io.github.aparx.bgui.core.item.InventoryClickHandler;
 import io.github.aparx.bgui.core.item.InventoryItemFactory;
 import io.github.aparx.bommons.item.WrappedItemStack;
 import org.bukkit.Material;
@@ -96,7 +95,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
   public InventoryStoragePopulator set(
       InventoryPosition position,
       @Nullable ItemStack itemStack,
-      @Nullable InventoryItemClickAction clickHandler) {
+      @Nullable InventoryClickHandler clickHandler) {
     return set(position, InventoryItemFactory.cancel(itemStack, clickHandler));
   }
 
@@ -111,7 +110,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
   public InventoryStoragePopulator set(
       InventoryPosition position,
       @Nullable WrappedItemStack itemStack,
-      @Nullable InventoryItemClickAction clickHandler) {
+      @Nullable InventoryClickHandler clickHandler) {
     return set(position, InventoryItemFactory.cancel(itemStack, clickHandler));
   }
 
@@ -124,7 +123,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
   public InventoryStoragePopulator set(
       InventoryPosition position,
       Material material,
-      @Nullable InventoryItemClickAction clickHandler) {
+      @Nullable InventoryClickHandler clickHandler) {
     return set(position, InventoryItemFactory.cancel(material, clickHandler));
   }
 
@@ -149,7 +148,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
   public InventoryStoragePopulator set(
       int relativeIndex,
       @Nullable ItemStack itemStack,
-      @Nullable InventoryItemClickAction clickHandler) {
+      @Nullable InventoryClickHandler clickHandler) {
     return set(relativeIndex, InventoryItemFactory.cancel(itemStack, clickHandler));
   }
 
@@ -164,7 +163,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
   public InventoryStoragePopulator set(
       int relativeIndex,
       @Nullable WrappedItemStack itemStack,
-      @Nullable InventoryItemClickAction clickHandler) {
+      @Nullable InventoryClickHandler clickHandler) {
     return set(relativeIndex, InventoryItemFactory.cancel(itemStack, clickHandler));
   }
 
@@ -177,7 +176,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
   public InventoryStoragePopulator set(
       int relativeIndex,
       Material material,
-      @Nullable InventoryItemClickAction clickHandler) {
+      @Nullable InventoryClickHandler clickHandler) {
     return set(relativeIndex, InventoryItemFactory.cancel(material, clickHandler));
   }
 
@@ -197,7 +196,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
 
   @CanIgnoreReturnValue
   public InventoryStoragePopulator outline(
-      @Nullable ItemStack itemStack, @Nullable InventoryItemClickAction clickHandler) {
+      @Nullable ItemStack itemStack, @Nullable InventoryClickHandler clickHandler) {
     view.fillEdges(InventoryItemFactory.cancel(itemStack, clickHandler));
     return this;
   }
@@ -210,7 +209,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
 
   @CanIgnoreReturnValue
   public InventoryStoragePopulator outline(
-      @Nullable WrappedItemStack itemStack, @Nullable InventoryItemClickAction clickHandler) {
+      @Nullable WrappedItemStack itemStack, @Nullable InventoryClickHandler clickHandler) {
     view.fillEdges(InventoryItemFactory.cancel(itemStack, clickHandler));
     return this;
   }
@@ -223,7 +222,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
 
   @CanIgnoreReturnValue
   public InventoryStoragePopulator outline(
-      Material material, @Nullable InventoryItemClickAction clickHandler) {
+      Material material, @Nullable InventoryClickHandler clickHandler) {
     view.fillEdges(InventoryItemFactory.cancel(material, clickHandler));
     return this;
   }
@@ -244,7 +243,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
 
   @CanIgnoreReturnValue
   public InventoryStoragePopulator fill(
-      @Nullable ItemStack itemStack, @Nullable InventoryItemClickAction clickHandler) {
+      @Nullable ItemStack itemStack, @Nullable InventoryClickHandler clickHandler) {
     view.fill(InventoryItemFactory.cancel(itemStack, clickHandler));
     return this;
   }
@@ -257,7 +256,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
 
   @CanIgnoreReturnValue
   public InventoryStoragePopulator fill(
-      @Nullable WrappedItemStack itemStack, @Nullable InventoryItemClickAction clickHandler) {
+      @Nullable WrappedItemStack itemStack, @Nullable InventoryClickHandler clickHandler) {
     view.fill(InventoryItemFactory.cancel(itemStack, clickHandler));
     return this;
   }
@@ -270,7 +269,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
 
   @CanIgnoreReturnValue
   public InventoryStoragePopulator fill(
-      Material material, @Nullable InventoryItemClickAction clickHandler) {
+      Material material, @Nullable InventoryClickHandler clickHandler) {
     view.fill(InventoryItemFactory.cancel(material, clickHandler));
     return this;
   }
@@ -296,7 +295,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
   public InventoryStoragePopulator fill(
       FillType fillType,
       @Nullable ItemStack itemStack,
-      @Nullable InventoryItemClickAction clickHandler) {
+      @Nullable InventoryClickHandler clickHandler) {
     return fill(fillType, InventoryItemFactory.cancel(itemStack, clickHandler));
   }
 
@@ -311,7 +310,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
   public InventoryStoragePopulator fill(
       FillType fillType,
       @Nullable WrappedItemStack itemStack,
-      @Nullable InventoryItemClickAction clickHandler) {
+      @Nullable InventoryClickHandler clickHandler) {
     return fill(fillType, InventoryItemFactory.cancel(itemStack, clickHandler));
   }
 
@@ -326,7 +325,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
   public InventoryStoragePopulator fill(
       FillType fillType,
       Material material,
-      @Nullable InventoryItemClickAction clickHandler) {
+      @Nullable InventoryClickHandler clickHandler) {
     return fill(fillType, InventoryItemFactory.cancel(material, clickHandler));
   }
 
@@ -361,7 +360,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
   public InventoryStoragePopulator fill(
       InventorySection area,
       @Nullable ItemStack itemStack,
-      @Nullable InventoryItemClickAction clickHandler) {
+      @Nullable InventoryClickHandler clickHandler) {
     return fill(area, InventoryItemFactory.cancel(itemStack, clickHandler));
   }
 
@@ -378,7 +377,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
   public InventoryStoragePopulator fill(
       InventorySection area,
       @Nullable WrappedItemStack itemStack,
-      @Nullable InventoryItemClickAction clickHandler) {
+      @Nullable InventoryClickHandler clickHandler) {
     return fill(area, InventoryItemFactory.cancel(itemStack, clickHandler));
   }
 
@@ -395,7 +394,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
   public InventoryStoragePopulator fill(
       InventorySection area,
       Material material,
-      @Nullable InventoryItemClickAction clickHandler) {
+      @Nullable InventoryClickHandler clickHandler) {
     return fill(area, InventoryItemFactory.cancel(material, clickHandler));
   }
 
@@ -441,7 +440,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
       InventoryPosition start,
       InventoryPosition stop,
       @Nullable ItemStack itemStack,
-      InventoryItemClickAction clickHandler) {
+      InventoryClickHandler clickHandler) {
     return line(start, stop, InventoryItemFactory.cancel(itemStack, clickHandler));
   }
 
@@ -458,7 +457,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
       InventoryPosition start,
       InventoryPosition stop,
       @Nullable WrappedItemStack itemStack,
-      InventoryItemClickAction clickHandler) {
+      InventoryClickHandler clickHandler) {
     return line(start, stop, InventoryItemFactory.cancel(itemStack, clickHandler));
   }
 
@@ -475,7 +474,7 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
       InventoryPosition start,
       InventoryPosition stop,
       Material material,
-      InventoryItemClickAction clickHandler) {
+      InventoryClickHandler clickHandler) {
     return line(start, stop, InventoryItemFactory.cancel(material, clickHandler));
   }
 

@@ -6,7 +6,6 @@ import io.github.aparx.bommons.core.IndexMap;
 import io.github.aparx.bgui.core.dimension.InventoryDimensions;
 import io.github.aparx.bgui.core.dimension.InventoryPosition;
 import io.github.aparx.bgui.core.dimension.InventorySection;
-import io.github.aparx.bgui.core.CopyableInventoryContentView;
 import io.github.aparx.bgui.core.item.InventoryItem;
 import io.github.aparx.bgui.core.item.InventoryItemAccessor;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -33,7 +32,7 @@ public class InventoryStorageLayer extends CopyableInventoryContentView implemen
 
   @Override
   public InventoryStorageLayer copy() {
-    InventoryStorageLayer layer = new InventoryStorageLayer(getArea(), getParent());
+    InventoryStorageLayer layer = new InventoryStorageLayer(getRelativeArea(), getParent());
     layer.elementIndexMap.putAll(elementIndexMap);
     return layer;
   }

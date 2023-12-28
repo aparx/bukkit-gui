@@ -1,6 +1,7 @@
 package io.github.aparx.bgui.core;
 
 import com.google.common.base.Preconditions;
+import io.github.aparx.bgui.core.content.InventoryContentView;
 import io.github.aparx.bgui.core.item.InventoryItem;
 import io.github.aparx.bgui.core.dimension.InventoryPosition;
 import org.bukkit.entity.HumanEntity;

@@ -4,8 +4,8 @@ import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import io.github.aparx.bgui.core.dimension.InventoryPosition;
 import io.github.aparx.bgui.core.dimension.InventorySection;
-import io.github.aparx.bgui.core.CopyableInventoryContentView;
-import io.github.aparx.bgui.core.InventoryContentView;
+import io.github.aparx.bgui.core.content.CopyableInventoryContentView;
+import io.github.aparx.bgui.core.content.InventoryContentView;
 import io.github.aparx.bgui.core.item.InventoryItem;
 import io.github.aparx.bgui.core.item.InventoryItemAccessor;
 import org.checkerframework.checker.index.qual.NonNegative;
@@ -38,14 +38,9 @@ public class InventoryPageGroup extends CopyableInventoryContentView implements 
     this.itemHandler = new PaginationItemHandler(this);
   }
 
-  @Override
-  public InventoryPageGroup copy() {
-    InventoryPageGroup pageGroup = new InventoryPageGroup(getArea(), getParent());
-    pageGroup.pages.addAll(pages);
-    pageGroup.itemHandler.setPlaceholder(itemHandler.getPlaceholder());
-    for (PaginationItemType type : PaginationItemType.values())
-      pageGroup.itemHandler.set(type, itemHandler.get(type));
-    return pageGroup;
+  /** @see #hasPagination(int) */
+  public final boolean hasPagination() {
+    return hasPagination(getPageCount());
   }
 
   /**
@@ -62,9 +57,14 @@ public class InventoryPageGroup extends CopyableInventoryContentView implements 
     return pageCount > 1;
   }
 
-  /** @see #hasPagination(int) */
-  public boolean hasPagination() {
-    return hasPagination(getPageCount());
+  @Override
+  public InventoryPageGroup copy() {
+    InventoryPageGroup pageGroup = new InventoryPageGroup(getRelativeArea(), getParent());
+    pageGroup.pages.addAll(pages);
+    pageGroup.itemHandler.setPlaceholder(itemHandler.getPlaceholder());
+    for (PaginationItemType type : PaginationItemType.values())
+      pageGroup.itemHandler.set(type, itemHandler.get(type));
+    return pageGroup;
   }
 
   @Override
@@ -73,7 +73,7 @@ public class InventoryPageGroup extends CopyableInventoryContentView implements 
     if (hasPagination())
       for (PaginationItemType type : PaginationItemType.values()) {
         PaginationItemHandler.PaginationItem item = itemHandler.get(type);
-        if (position.getIndex() == item.getAbsolutePosition().getIndex()) {
+        if (position.equalIndex(item.getAbsolutePosition())) {
           if (hasMore(type.getSkipType(), 1))
             return item.getItem();
           @Nullable InventoryItem placeholder = itemHandler.getPlaceholder();

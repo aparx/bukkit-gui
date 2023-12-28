@@ -1,7 +1,7 @@
 package io.github.aparx.bgui.core.populators;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import io.github.aparx.bgui.core.InventoryContentView;
+import io.github.aparx.bgui.core.content.InventoryContentView;
 import io.github.aparx.bgui.core.content.pagination.InventoryPageGroup;
 import io.github.aparx.bgui.core.content.pagination.PaginationItemType;
 import io.github.aparx.bgui.core.dimension.InventoryPosition;

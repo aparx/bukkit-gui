@@ -1,4 +1,4 @@
-package io.github.aparx.bgui.core;
+package io.github.aparx.bgui.core.content;
 
 import io.github.aparx.bgui.core.dimension.InventorySection;
 import org.checkerframework.checker.nullness.qual.NonNull;

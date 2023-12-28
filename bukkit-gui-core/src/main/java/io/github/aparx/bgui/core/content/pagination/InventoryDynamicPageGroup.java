@@ -2,8 +2,8 @@ package io.github.aparx.bgui.core.content.pagination;
 
 import io.github.aparx.bgui.core.dimension.InventoryPosition;
 import io.github.aparx.bgui.core.dimension.InventorySection;
-import io.github.aparx.bgui.core.InventoryContentView;
-import io.github.aparx.bgui.core.CopyableInventoryContentView;
+import io.github.aparx.bgui.core.content.InventoryContentView;
+import io.github.aparx.bgui.core.content.CopyableInventoryContentView;
 import io.github.aparx.bgui.core.content.InventoryStorageLayer;
 import io.github.aparx.bgui.core.item.InventoryItem;
 import io.github.aparx.bgui.core.item.InventoryItemAccessor;
@@ -35,7 +35,7 @@ public class InventoryDynamicPageGroup extends CopyableInventoryContentView {
   }
 
   public InventoryDynamicPageGroup(InventoryPageGroup pagesGroup) {
-    super(pagesGroup.getArea(), pagesGroup.getParent());
+    super(pagesGroup.getSpace(), pagesGroup.getParent());
     this.group = pagesGroup;
   }
 
@@ -76,6 +76,17 @@ public class InventoryDynamicPageGroup extends CopyableInventoryContentView {
   }
 
   /**
+   * Returns the expected number of pages, for given maximum elements size per page, based off of
+   * the amount of elements currently given.
+   *
+   * @param maxPerPage the maximum size per page
+   * @return the expected number of pages
+   */
+  public final int getExpectedNumberOfPages(int maxPerPage) {
+    return (int) Math.ceil(elements.size() / (double) maxPerPage);
+  }
+
+  /**
    * Returns the default maximum size of elements per page.
    *
    * @return the default maximum element size per page.
@@ -86,17 +97,6 @@ public class InventoryDynamicPageGroup extends CopyableInventoryContentView {
     if (group.hasPagination(pageCount))
       return areaSize - getExcludingElementIndices(pageCount).length;
     return areaSize;
-  }
-
-  /**
-   * Returns the expected number of pages, for given maximum elements size per page, based off of
-   * the amount of elements currently given.
-   *
-   * @param maxPerPage the maximum size per page
-   * @return the expected number of pages
-   */
-  public int getExpectedNumberOfPages(int maxPerPage) {
-    return (int) Math.ceil(elements.size() / (double) maxPerPage);
   }
 
   /**
@@ -122,7 +122,7 @@ public class InventoryDynamicPageGroup extends CopyableInventoryContentView {
    *
    * @param maxPerPage the maximum number of elements per page
    */
-  protected void createPages(int maxPerPage) {
+  public void createPages(int maxPerPage) {
     synchronized (lock) {
       final int elemSize = elements.size();
       group.clear();
@@ -159,11 +159,12 @@ public class InventoryDynamicPageGroup extends CopyableInventoryContentView {
    * the returning array have no effect on this group.
    */
   protected int[] getExcludingElementIndices(int pageCount) {
-    if (!group.hasPagination(pageCount))
-      return new int[0];
-    return getEnsuredExcludingElementIndices();
+    if (group.hasPagination(pageCount))
+      return getEnsuredExcludingElementIndices();
+    return ArrayUtils.EMPTY_INT_ARRAY;
   }
 
+  /** Returns the relative indices of all pagination items (regardless of pagination itself) */
   private int[] getEnsuredExcludingElementIndices() {
     PaginationItemType[] types = PaginationItemType.values();
     int[] excludeIndices = new int[types.length];
