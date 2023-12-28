@@ -204,6 +204,11 @@ public final class InventoryPosition implements Comparable<InventoryPosition>,
   }
 
   @CheckReturnValue
+  public InventoryPosition add(InventoryPosition other) {
+    return add(other.getColumn(), other.getRow());
+  }
+
+  @CheckReturnValue
   public InventoryPosition subtract(int columnOffset, int rowOffset, int width) {
     return ofPoint(column - columnOffset, row - rowOffset, width);
   }
@@ -211,6 +216,11 @@ public final class InventoryPosition implements Comparable<InventoryPosition>,
   @CheckReturnValue
   public InventoryPosition subtract(int columnOffset, int rowOffset) {
     return subtract(columnOffset, rowOffset, width);
+  }
+
+  @CheckReturnValue
+  public InventoryPosition subtract(InventoryPosition other) {
+    return subtract(other.getColumn(), other.getRow());
   }
 
   public boolean isEdge(int height) {

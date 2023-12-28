@@ -103,7 +103,7 @@ public abstract class InventoryContentView {
    * Returns a section that represents the occupying space, starting at {@code [0, 0]} and
    * expanding towards the dimensions of this view.
    *
-   * @return the section's occupying space in a 2D pane (beginning offset subtracted)
+   * @return the section's occupying space in a 2D pane ({@code begin} offset subtracted)
    */
   public final InventorySection getSpace() {
     if (space != null)

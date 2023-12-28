@@ -46,9 +46,9 @@ public final class InventoryPagePopulator extends BasePageGroupPopulator<Invento
 
   /** @see #populate(InventoryPageGroup) */
   public static InventoryPagePopulator create(
-      InventorySection section, InventoryContentView parent) {
-    Preconditions.checkNotNull(section, "Section must not be null");
-    return populate(InventoryContentFactory.pageGroup(section, parent));
+      InventorySection relativeArea, InventoryContentView parent) {
+    Preconditions.checkNotNull(relativeArea, "Section must not be null");
+    return populate(InventoryContentFactory.pageGroup(relativeArea, parent));
   }
 
   /** @see #populate(InventoryPageGroup) */

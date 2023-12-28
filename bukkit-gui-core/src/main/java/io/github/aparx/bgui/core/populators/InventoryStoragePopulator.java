@@ -53,9 +53,9 @@ public final class InventoryStoragePopulator implements InventoryPopulator<Inven
 
   /** @see #populate(InventoryStorageLayer) */
   public static InventoryStoragePopulator create(
-      InventorySection section, InventoryContentView parent) {
-    Preconditions.checkNotNull(section, "Section must not be null");
-    return populate(InventoryContentFactory.storageLayer(section, parent));
+      InventorySection relativeArea, InventoryContentView parent) {
+    Preconditions.checkNotNull(relativeArea, "Section must not be null");
+    return populate(InventoryContentFactory.storageLayer(relativeArea, parent));
   }
 
   /** @see #populate(InventoryStorageLayer) */

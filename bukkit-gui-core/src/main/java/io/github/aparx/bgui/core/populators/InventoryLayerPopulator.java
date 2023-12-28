@@ -47,9 +47,9 @@ public class InventoryLayerPopulator implements InventoryPopulator<InventoryLaye
 
   /** @see #populate(InventoryLayerGroup) */
   public static InventoryLayerPopulator create(
-      InventorySection section, InventoryContentView parent) {
-    Preconditions.checkNotNull(section, "Section must not be null");
-    return populate(InventoryContentFactory.layerGroup(section, parent));
+      InventorySection relativeArea, InventoryContentView parent) {
+    Preconditions.checkNotNull(relativeArea, "Section must not be null");
+    return populate(InventoryContentFactory.layerGroup(relativeArea, parent));
   }
 
   /** @see #populate(InventoryLayerGroup) */

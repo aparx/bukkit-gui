@@ -72,7 +72,8 @@ public class InventorySection implements Iterable<InventoryPosition>, InventoryS
   }
 
   public static InventorySection of(InventoryDimensions dimensions, int width) {
-    return of(InventoryPosition.ofZero(width), InventoryPosition.ofIndex(dimensions.size() - 1, width));
+    return of(InventoryPosition.ofZero(width), InventoryPosition.ofIndex(dimensions.size() - 1,
+        width));
   }
 
   /**
@@ -150,23 +151,19 @@ public class InventorySection implements Iterable<InventoryPosition>, InventoryS
     return (1 + end.getRow() - begin.getRow()) * (1 + end.getColumn() - begin.getColumn());
   }
 
-  public InventorySection subsection(int fromRelativeIndex, int toRelativeIndex) {
-    Preconditions.checkArgument(fromRelativeIndex >= 0, "Index must not be negative");
-    Preconditions.checkArgument(toRelativeIndex >= fromRelativeIndex,
+  public InventorySection subsection(int fromInclusiveIndex, int toInclusiveIndex) {
+    Preconditions.checkArgument(fromInclusiveIndex >= 0, "Index must not be negative");
+    Preconditions.checkArgument(toInclusiveIndex >= fromInclusiveIndex,
         "toRelativeIndex < fromRelativeIndex");
-    int diff; // differences measured in indices
-    InventoryPosition begin = this.begin.shift(fromRelativeIndex);
-    diff = this.end.getIndex() - begin.getIndex();
-    if (diff < 0) throw new IndexOutOfBoundsException("begin: " + diff);
-    InventoryPosition end = this.begin.shift(toRelativeIndex);
-    diff = this.end.getIndex() - end.getIndex();
-    if (diff < 0) throw new IndexOutOfBoundsException("end: " + diff);
-    return of(begin, end);
+    Preconditions.checkArgument(toInclusiveIndex - fromInclusiveIndex < size(),
+        "Subsection is too large");
+    return of(InventoryPosition.ofIndex(begin.getIndex() + fromInclusiveIndex, begin.getWidth()),
+        InventoryPosition.ofIndex(begin.getIndex() + toInclusiveIndex, end.getWidth()));
   }
 
-  public InventorySection subsection(int fromRelativeIndex) {
-    Preconditions.checkArgument(fromRelativeIndex >= 0, "Index must not be negative");
-    return subsection(fromRelativeIndex, size());
+  public InventorySection subsection(int fromInclusiveIndex) {
+    Preconditions.checkArgument(fromInclusiveIndex >= 0, "Index must not be negative");
+    return subsection(fromInclusiveIndex, size());
   }
 
   public InventorySection shrink(int column, int row) {
