@@ -39,7 +39,7 @@ A quite basic, but yet advanced example is the following:
 <dependencies>
   <dependency>
     <groupId>com.github.aparx.bukkit-gui</groupId>
-    <artifactId>bukkit-gui-core</artifactId>
+    <artifactId>core</artifactId>
     <version>2.0.0-beta.1</version>
   </dependency>
 </dependencies>
