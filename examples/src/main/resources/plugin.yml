@@ -1,5 +1,5 @@
 name: bukkit-gui-example
 # main: io.github.aparx.bgui.examples.<TARGET EXAMPLE>
-main: io.github.aparx.bgui.examples.BasicLayerExample
+main: com.github.aparx.bgui.examples.InventoryProviderExample
 version: '${project.version}'
 api-version: 1.14

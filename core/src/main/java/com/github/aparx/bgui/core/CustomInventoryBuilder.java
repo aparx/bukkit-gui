@@ -4,6 +4,7 @@ import com.github.aparx.bgui.core.content.CopyableInventoryContentView;
 import com.github.aparx.bgui.core.content.InventoryContentFactory;
 import com.github.aparx.bgui.core.content.InventoryContentView;
 import com.github.aparx.bgui.core.dimension.InventoryDimensions;
+import com.github.aparx.bgui.core.provider.InventoryProvider;
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CheckReturnValue;
@@ -29,7 +30,7 @@ public final class CustomInventoryBuilder {
 
   private @Nullable String title;
   private @Nullable TickDuration updateInterval;
-  private @Nullable InventoryContentView content;
+  private @Nullable InventoryProvider provider;
   private @Nullable BiConsumer<CustomInventory, ? extends InventoryContentView> populator;
 
   private CustomInventoryBuilder() {}
@@ -83,6 +84,14 @@ public final class CustomInventoryBuilder {
     return updateInterval;
   }
 
+  /** @since 2.0 */
+  @CanIgnoreReturnValue
+  public CustomInventoryBuilder populate(InventoryProvider provider) {
+    this.provider = provider;
+    this.populator = null;
+    return this;
+  }
+
   /**
    * @see #populate(InventoryContentView, BiConsumer)
    * @see InventoryStoragePopulator
@@ -104,7 +113,7 @@ public final class CustomInventoryBuilder {
    *   <li>Allocation of {@link CustomInventory}</li>
    *   <li>Content copy (if instance of {@link CopyableInventoryContentView})</li>
    *   <li>Content population (if {@code populator} is not-null)</li>
-   *   <li>Content push (through {@link CustomInventory#updateContent(InventoryContentView)})</li>
+   *   <li>Content push (through {@link CustomInventory#update(InventoryContentView)})</li>
    * </ol>
    *
    * @param content   the new content of the inventory
@@ -115,13 +124,13 @@ public final class CustomInventoryBuilder {
    * @see CustomInventory
    * @see InventoryContentView
    * @see CopyableInventoryContentView
-   * @see CustomInventory#updateContent(InventoryContentView)
+   * @see CustomInventory#update(InventoryContentView)
    */
   @CanIgnoreReturnValue
   public <T extends InventoryContentView> CustomInventoryBuilder populate(
       T content, @Nullable BiConsumer<CustomInventory, T> populator) {
     Preconditions.checkNotNull(content, "Content must not be null");
-    this.content = content;
+    this.provider = InventoryProvider.of(content);
     this.populator = populator;
     return this;
   }
@@ -137,8 +146,8 @@ public final class CustomInventoryBuilder {
     return populate(InventoryContentFactory.storageLayer(dimensions), populator);
   }
 
-  public @Nullable InventoryContentView getContent() {
-    return content;
+  public @Nullable InventoryProvider getProvider() {
+    return provider;
   }
 
   public @Nullable BiConsumer<CustomInventory, ? extends InventoryContentView> getPopulator() {
@@ -151,13 +160,18 @@ public final class CustomInventoryBuilder {
     CustomInventory inventory = (updateInterval != null
         ? new CustomInventory(plugin, updateInterval, title)
         : new CustomInventory(plugin, title));
-    @Nullable InventoryContentView content = this.content;
-    Preconditions.checkNotNull(content, "Content should be defined");
-    if (content instanceof CopyableInventoryContentView)
-      content = ((CopyableInventoryContentView) content).copy();
-    if (populator != null)
-      ((BiConsumer) populator).accept(inventory, content);
-    inventory.updateContent(content);
+    Preconditions.checkNotNull(provider, "No content provider is apparent");
+    if (provider instanceof InventoryProvider.StaticInventoryProvider) {
+      InventoryContentView content = provider.init();
+      Preconditions.checkNotNull(content, "Provider returned null as content at init");
+      if (content instanceof CopyableInventoryContentView)
+        content = ((CopyableInventoryContentView) content).copy();
+      if (populator != null)
+        ((BiConsumer) populator).accept(inventory, content);
+      inventory.update(content);
+    } else {
+      inventory.update(provider);
+    }
     return inventory;
   }
 

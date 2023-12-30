@@ -2,8 +2,10 @@ package com.github.aparx.bgui.core;
 
 import com.github.aparx.bgui.core.content.InventoryContentView;
 import com.github.aparx.bgui.core.dimension.InventoryDimensions;
+import com.github.aparx.bgui.core.provider.InventoryProvider;
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.CheckReturnValue;
 import io.github.aparx.bommons.core.WeakHashSet;
 import com.github.aparx.bgui.core.item.InventoryItem;
 import com.github.aparx.bgui.core.item.InventoryItemAccessor;
@@ -45,9 +47,10 @@ public class CustomInventory implements InventoryItemAccessor {
 
   /** Current update task running for all viewers */
   protected @Nullable BukkitTask task;
-  protected @Nullable InventoryContentView content;
   protected @Nullable Inventory inventory;
 
+  private @Nullable InventoryContentView content;
+  private @Nullable InventoryProvider provider;
   private @Nullable String title;
 
   protected final CustomInventoryListener listener = new CustomInventoryListener(this);
@@ -69,8 +72,13 @@ public class CustomInventory implements InventoryItemAccessor {
     this.title = title;
   }
 
+  /** Returns the current internal content, provided by the {@code InventoryProvider} */
   public final @Nullable InventoryContentView getContent() {
     return content;
+  }
+
+  public final @Nullable InventoryProvider getProvider() {
+    return provider;
   }
 
   public final @Nullable String getTitle() {
@@ -81,28 +89,37 @@ public class CustomInventory implements InventoryItemAccessor {
     return plugin;
   }
 
-  public void updateContent(InventoryContentView content, @Nullable String title) {
-    Preconditions.checkNotNull(content, "Content must not be null");
-    Preconditions.checkArgument(
-        content.getArea().getBegin().getIndex() == 0,
-        "Root content must have no offset: begin must be (0, 0)");
-    @Nullable InventoryDimensions currentDimensions = (
-        this.content != null ? this.content.getDimensions() : null);
-    this.content = content;
-    if (Objects.equals(title, this.title) &&
-        Objects.equals(currentDimensions, content.getDimensions()))
-      renderInventory(false); // force re-render
-    else createInventory(title);
+  public final void update() {
+    if (render(updateTicker.tick() > 1))
+      updateTicker.reset();
+  }
+
+  public void update(@Nullable InventoryProvider provider, @Nullable String title) {
     this.title = title;
+    if (provider != null && !provider.equals(this.provider)) {
+      this.provider = provider;
+      InventoryContentView initialContent = provider.init();
+      Preconditions.checkNotNull(initialContent, "Provider returned null as content at init");
+      this.content = initialContent;
+    }
+    update();
   }
 
-  public void updateContent(InventoryContentView content) {
-    updateContent(content, this.title);
+  public void update(@Nullable InventoryProvider provider) {
+    update(provider, this.title);
   }
 
-  public void updateTitle(@Nullable String title) {
+  public void update(InventoryContentView content, @Nullable String title) {
+    update(InventoryProvider.of(content), title);
+  }
+
+  public void update(InventoryContentView content) {
+    update(InventoryProvider.of(content), title);
+  }
+
+  public void update(@Nullable String title) {
     Preconditions.checkNotNull(content, "Content must not be null");
-    updateContent(content, title);
+    update(InventoryProvider.of(content), title);
   }
 
   @CanIgnoreReturnValue
@@ -115,7 +132,7 @@ public class CustomInventory implements InventoryItemAccessor {
   @CanIgnoreReturnValue
   public boolean show(Iterable<? extends Player> viewers) {
     Preconditions.checkNotNull(viewers, "Viewers must not be null");
-    if (inventory == null) createInventory(getTitle());
+    if (inventory == null) createInventory(getTitle(), true);
     int viewerCount = 0;
     boolean success = false;
     for (Player viewer : viewers) {
@@ -153,32 +170,60 @@ public class CustomInventory implements InventoryItemAccessor {
     }
   }
 
-  public void updateInventory() {
-    if (!renderInventory(updateTicker.getElapsed() > 1))
-      updateTicker.tick(); // increase ticker
-    else
-      updateTicker.reset();
+  /**
+   * Renders this inventory and returns true if the update task is stopped
+   *
+   * @param checkForViewers if true, checks for the number of viewers and returns true
+   *                        (implies stop) if there is no viewer is viewing this inventory anymore
+   * @return true if the internal updating task is stopped, false if not
+   */
+  @CanIgnoreReturnValue
+  public boolean render(boolean checkForViewers) {
+    if (revalidateTask()) return true;
+    if (provider == null) return false;
+    if (content != null && inventory != null)
+      content.getArea().forEach((position) -> {
+        @Nullable InventoryItem item = content.get(this, position);
+        inventory.setItem(position.getIndex(), (item != null ? item.get(this) : null));
+      });
+    if (checkForViewers) {
+      List<Player> removeViewers = new ArrayList<>(0);
+      viewers.forEach((viewer) -> {
+        Inventory topInventory = viewer.getOpenInventory().getTopInventory();
+        if (!Objects.equals(topInventory, inventory))
+          removeViewers.add(viewer);
+      });
+      removeViewers.forEach(viewers::remove);
+      if (viewers.isEmpty())
+        return stop();
+    }
+    InventoryContentView newContent = provider.update(this);
+    Preconditions.checkNotNull(newContent, "Provider return null as content at update");
+    if (reassignContent(newContent, title))
+      createInventory(title, true);
+    return false;
   }
 
-  /** Renders this inventory and returns true if the update task is stopped */
-  @CanIgnoreReturnValue
-  public boolean renderInventory(boolean checkForViewers) {
-    if (revalidateTask()) return true;
-    if (content == null || inventory == null) return false;
-    content.getArea().forEach((position) -> {
-      @Nullable InventoryItem item = content.get(this, position);
-      inventory.setItem(position.getIndex(), (item != null ? item.get(this) : null));
-    });
-    if (!checkForViewers)
-      return false;
-    List<Player> removeViewers = new ArrayList<>(0);
-    viewers.forEach((viewer) -> {
-      Inventory topInventory = viewer.getOpenInventory().getTopInventory();
-      if (!Objects.equals(topInventory, inventory))
-        removeViewers.add(viewer);
-    });
-    removeViewers.forEach(viewers::remove);
-    return !removeViewers.isEmpty() && revalidateTask();
+  /**
+   * Reassigns the internal content and title property and returns a boolean that defines whether a
+   * re-render or re-creation of the inventory is necessary.
+   *
+   * @param content the new content to reassign to
+   * @param title   the title of the inventory
+   * @return true, if the content or title is different, which requires an inventory recreation.
+   * False, if the content is similar to the one before, and a re-render is necessary.
+   */
+  @CheckReturnValue
+  protected boolean reassignContent(InventoryContentView content, @Nullable String title) {
+    Preconditions.checkNotNull(content, "Content must not be null");
+    Preconditions.checkArgument(
+        content.getArea().getBegin().getIndex() == 0,
+        "Inventory content at root must begin at [0, 0]");
+    @Nullable InventoryDimensions currentDimensions = (
+        this.content != null ? this.content.getDimensions() : null);
+    this.content = content;
+    return !Objects.equals(this.title, (this.title = title)) ||
+        !Objects.equals(currentDimensions, content.getDimensions());
   }
 
   @CanIgnoreReturnValue
@@ -189,7 +234,7 @@ public class CustomInventory implements InventoryItemAccessor {
       if (task != null)
         return false;
       // render the inventory with viewer check
-      this.task = Bukkit.getScheduler().runTaskTimer(plugin, this::updateInventory,
+      this.task = Bukkit.getScheduler().runTaskTimer(plugin, () -> this.update(),
           updateInterval.toTicks(), updateInterval.toTicks());
       Bukkit.getPluginManager().registerEvents(listener, plugin);
       return true;
@@ -219,13 +264,12 @@ public class CustomInventory implements InventoryItemAccessor {
     return false;
   }
 
-  private void createInventory(@Nullable String title) {
+  private void createInventory(@Nullable String title, boolean render) {
     Preconditions.checkNotNull(content, "Content is undefined");
-    updateTicker.reset(); // reset first, to avoid automatic `checkForViewers`
     this.inventory = (title != null
         ? Bukkit.createInventory(null, content.getDimensions().size(), title)
         : Bukkit.createInventory(null, content.getDimensions().size()));
-    renderInventory(false); // force re-render
+    if (render) render(false);
     viewers.forEach((viewer) -> viewer.openInventory(inventory));
   }
 

@@ -8,6 +8,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.framework.qual.DefaultQualifier;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.IntConsumer;
 
 /**
@@ -95,6 +96,26 @@ public final class InventoryDimensions implements ConfigurationSerializable {
     return height;
   }
 
+  /** @since 2.0 */
+  public InventoryDimensions add(int width, int height) {
+    return (height != 0 || width != 0 ? of(this.width + width, this.height + height) : this);
+  }
+
+  /** @since 2.0 */
+  public InventoryDimensions add(int height) {
+    return (height != 0 ? of(width, this.height + height) : this);
+  }
+
+  /** @since 2.0 */
+  public InventoryDimensions subtract(int width, int height) {
+    return (height != 0 || width != 0 ? of(this.width - width, this.height - height) : this);
+  }
+
+  /** @since 2.0 */
+  public InventoryDimensions subtract(int height) {
+    return (height != 0 ? of(width, this.height - height) : this);
+  }
+
   public void forEach(IntConsumer consumer) {
     for (int i = 0, len = size(); i < len; ++i)
       consumer.accept(i);
@@ -108,4 +129,16 @@ public final class InventoryDimensions implements ConfigurationSerializable {
         '}';
   }
 
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) return true;
+    if (object == null || getClass() != object.getClass()) return false;
+    InventoryDimensions that = (InventoryDimensions) object;
+    return width == that.width && height == that.height;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(width, height);
+  }
 }

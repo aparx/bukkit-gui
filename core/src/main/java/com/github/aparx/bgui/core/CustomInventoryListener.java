@@ -51,7 +51,7 @@ public class CustomInventoryListener implements Listener {
             InventoryPosition.ofIndex(slot, content.getDimensions().getWidth()));
         if (inventoryItem != null) {
           inventoryItem.handleClick(inventoryItem, event);
-          thisInventory.renderInventory(false); // force re-render due to click
+          thisInventory.render(false); // force re-render due to click
         }
       } else if (thisInventory != null)
         HandlerList.unregisterAll(this);
