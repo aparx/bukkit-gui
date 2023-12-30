@@ -51,6 +51,14 @@ public final class InventoryDimensions implements ConfigurationSerializable {
     return of(width, Math.max(InventoryPosition.toRow(size, width), 1));
   }
 
+  public static InventoryDimensions getMin(InventoryDimensions x, InventoryDimensions y) {
+    return (x.equals(y) ? x : of(Math.min(x.width, y.width), Math.min(x.height, y.height)));
+  }
+
+  public static InventoryDimensions getMax(InventoryDimensions x, InventoryDimensions y) {
+    return (x.equals(y) ? x : of(Math.max(x.width, y.width), Math.max(x.height, y.height)));
+  }
+
   public static InventoryDimensions deserialize(Map<?, ?> args) {
     return of(NumberConversions.toInt(args.get("width")),
         NumberConversions.toInt(args.get("height")));

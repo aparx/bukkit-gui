@@ -6,12 +6,12 @@ import com.github.aparx.bgui.core.provider.InventoryProvider;
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CheckReturnValue;
-import io.github.aparx.bommons.core.WeakHashSet;
+import com.github.aparx.bommons.core.WeakHashSet;
 import com.github.aparx.bgui.core.item.InventoryItem;
 import com.github.aparx.bgui.core.item.InventoryItemAccessor;
-import io.github.aparx.bommons.ticks.TickDuration;
-import io.github.aparx.bommons.ticks.ticker.DefaultTicker;
-import io.github.aparx.bommons.ticks.ticker.Ticker;
+import com.github.aparx.bommons.ticks.TickDuration;
+import com.github.aparx.bommons.ticks.ticker.DefaultTicker;
+import com.github.aparx.bommons.ticks.ticker.Ticker;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -81,10 +81,6 @@ public class CustomInventory implements InventoryItemAccessor {
     return provider;
   }
 
-  public final @Nullable String getTitle() {
-    return title;
-  }
-
   public final Plugin getPlugin() {
     return plugin;
   }
@@ -106,7 +102,7 @@ public class CustomInventory implements InventoryItemAccessor {
   }
 
   public void update(@Nullable InventoryProvider provider) {
-    update(provider, this.title);
+    update(provider, getTitle());
   }
 
   public void update(InventoryContentView content, @Nullable String title) {
@@ -114,7 +110,7 @@ public class CustomInventory implements InventoryItemAccessor {
   }
 
   public void update(InventoryContentView content) {
-    update(InventoryProvider.of(content), title);
+    update(InventoryProvider.of(content), getTitle());
   }
 
   public void update(@Nullable String title) {
@@ -132,18 +128,23 @@ public class CustomInventory implements InventoryItemAccessor {
   @CanIgnoreReturnValue
   public boolean show(Iterable<? extends Player> viewers) {
     Preconditions.checkNotNull(viewers, "Viewers must not be null");
-    if (inventory == null) createInventory(getTitle(), true);
-    int viewerCount = 0;
-    boolean success = false;
-    for (Player viewer : viewers) {
-      Preconditions.checkNotNull(viewer, "Viewer is null");
-      success |= this.viewers.add(viewer);
-      viewer.openInventory(inventory);
-      ++viewerCount;
+    if (inventory == null)
+      createInventory(getTitle());
+    synchronized (lock) {
+      if (inventory == null)
+        createInventory(getTitle());
+      int viewerCount = 0;
+      boolean success = false;
+      for (Player viewer : viewers) {
+        Preconditions.checkNotNull(viewer, "Viewer is null");
+        success |= this.viewers.add(viewer);
+        viewer.openInventory(inventory);
+        ++viewerCount;
+      }
+      if (viewerCount != 0)
+        start();
+      return success;
     }
-    if (viewerCount != 0)
-      start();
-    return success;
   }
 
   @CanIgnoreReturnValue
@@ -200,7 +201,7 @@ public class CustomInventory implements InventoryItemAccessor {
     InventoryContentView newContent = provider.update(this);
     Preconditions.checkNotNull(newContent, "Provider return null as content at update");
     if (reassignContent(newContent, title))
-      createInventory(title, true);
+      createInventory(title);
     return false;
   }
 
@@ -222,7 +223,7 @@ public class CustomInventory implements InventoryItemAccessor {
     @Nullable InventoryDimensions currentDimensions = (
         this.content != null ? this.content.getDimensions() : null);
     this.content = content;
-    return !Objects.equals(this.title, (this.title = title)) ||
+    return !Objects.equals(getTitle(), (this.title = title)) ||
         !Objects.equals(currentDimensions, content.getDimensions());
   }
 
@@ -264,19 +265,21 @@ public class CustomInventory implements InventoryItemAccessor {
     return false;
   }
 
-  private void createInventory(@Nullable String title, boolean render) {
+  private void createInventory(@Nullable String title) {
     Preconditions.checkNotNull(content, "Content is undefined");
-    this.inventory = (title != null
-        ? Bukkit.createInventory(null, content.getDimensions().size(), title)
-        : Bukkit.createInventory(null, content.getDimensions().size()));
-    if (render) render(false);
-    viewers.forEach((viewer) -> viewer.openInventory(inventory));
+    synchronized (lock) {
+      this.inventory = (title != null
+          ? Bukkit.createInventory(null, content.getDimensions().size(), title)
+          : Bukkit.createInventory(null, content.getDimensions().size()));
+      render(false);
+      viewers.forEach((viewer) -> viewer.openInventory(inventory));
+    }
   }
 
   /**
    * @deprecated Usage of {@code getInventory} is not advised, since showing the inventory
    * manually to other players using the returning inventory will not trigger the internal
-   * scheduler or listener to be created and updated. The usage of the "raw" inventory for other
+   * scheduler or listener to be updated or created. The usage of the "raw" inventory for other
    * reasons, should be totally valid.
    */
   @Deprecated
@@ -287,6 +290,10 @@ public class CustomInventory implements InventoryItemAccessor {
 
   public WeakHashSet<Player> getViewers() {
     return viewers;
+  }
+
+  public @Nullable String getTitle() {
+    return title;
   }
 
   public TickDuration getUpdateInterval() {

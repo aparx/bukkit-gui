@@ -2,8 +2,8 @@ package com.github.aparx.bgui.core.item;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.CheckReturnValue;
-import io.github.aparx.bommons.item.ItemStackSupplier;
-import io.github.aparx.bommons.item.WrappedItemStack;
+import com.github.aparx.bommons.item.ItemStackSupplier;
+import com.github.aparx.bommons.item.WrappedItemStack;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.NonNull;

@@ -6,7 +6,7 @@ import com.github.aparx.bgui.core.content.InventoryContentView;
 import com.github.aparx.bgui.core.dimension.InventoryDimensions;
 import com.github.aparx.bgui.core.populators.InventoryStoragePopulator;
 import com.github.aparx.bgui.core.provider.InventoryProvider;
-import io.github.aparx.bommons.ticks.TickTimeUnit;
+import com.github.aparx.bommons.ticks.TickTimeUnit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -18,7 +18,7 @@ import java.util.Objects;
 /**
  * @author aparx (Vinzent Z.)
  * @version 2023-12-30 08:41
- * @since 1.0
+ * @since 2.0
  */
 @DefaultQualifier(NonNull.class)
 public class InventoryProviderExample extends BukkitGuiExamplePlugin {

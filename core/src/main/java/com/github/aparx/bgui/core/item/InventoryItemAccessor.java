@@ -1,6 +1,6 @@
 package com.github.aparx.bgui.core.item;
 
-import io.github.aparx.bommons.ticks.ticker.Ticker;
+import com.github.aparx.bommons.ticks.ticker.Ticker;
 import org.bukkit.inventory.Inventory;
 
 /**

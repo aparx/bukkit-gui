@@ -4,7 +4,7 @@ import com.github.aparx.bgui.core.dimension.InventoryPosition;
 import com.github.aparx.bgui.core.item.InventoryItem;
 import com.google.common.base.Preconditions;
 import com.github.aparx.bgui.core.item.InventoryItemFactory;
-import io.github.aparx.bommons.item.ItemStackBuilders;
+import com.github.aparx.bommons.item.ItemStackBuilders;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
 import org.checkerframework.checker.nullness.qual.NonNull;

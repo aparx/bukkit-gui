@@ -5,7 +5,7 @@ import com.github.aparx.bgui.core.dimension.InventoryPosition;
 import com.github.aparx.bgui.core.dimension.InventorySection;
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import io.github.aparx.bommons.core.IndexMap;
+import com.github.aparx.bommons.core.IndexMap;
 import com.github.aparx.bgui.core.item.InventoryItem;
 import com.github.aparx.bgui.core.item.InventoryItemAccessor;
 import org.checkerframework.checker.nullness.qual.NonNull;

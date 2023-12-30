@@ -12,7 +12,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.github.aparx.bgui.core.item.InventoryItem;
 import com.github.aparx.bgui.core.item.InventoryClickHandler;
 import com.github.aparx.bgui.core.item.InventoryItemFactory;
-import io.github.aparx.bommons.item.WrappedItemStack;
+import com.github.aparx.bommons.item.WrappedItemStack;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.NonNull;

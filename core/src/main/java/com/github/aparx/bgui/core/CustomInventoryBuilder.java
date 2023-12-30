@@ -12,7 +12,7 @@ import com.github.aparx.bgui.core.content.InventoryStorageLayer;
 import com.github.aparx.bgui.core.populators.InventoryDynamicPagePopulator;
 import com.github.aparx.bgui.core.populators.InventoryPagePopulator;
 import com.github.aparx.bgui.core.populators.InventoryStoragePopulator;
-import io.github.aparx.bommons.ticks.TickDuration;
+import com.github.aparx.bommons.ticks.TickDuration;
 import org.bukkit.plugin.Plugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
